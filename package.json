@@ -1,0 +1,129 @@
+{
+  "name": "dot-event2",
+  "version": "0.0.1",
+  "description": "",
+  "keywords": [
+    ""
+  ],
+  "author": "dot-event <oss@dot-event.io>",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/dot-event/dot-event.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/dot-event/dot-event#readme",
+  "main": "dot-event.js",
+  "scripts": {
+    "fix": "npm run lint -- --fix",
+    "lint": "eslint --ignore-path .gitignore --ext=js .",
+    "pretty": "prettier --write **/*.css **/*.json **/*.md",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "eslint": "5.9.0",
+    "eslint-config-prettier": "3.3.0",
+    "eslint-plugin-prettier": "3.0.0",
+    "prettier": "1.15.2",
+    "husky": "1.2.0",
+    "lint-staged": "8.1.0",
+    "jest": "23.6.0"
+  },
+  "operations": {
+    "starter": {},
+    "git": {},
+    "link": {},
+    "spawn": {},
+    "version": {}
+  },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "curly": "error",
+      "indent": [
+        "error",
+        2,
+        {
+          "SwitchCase": 1
+        }
+      ],
+      "linebreak-style": [
+        "error",
+        "unix"
+      ],
+      "max-len": [
+        "error",
+        {
+          "code": 60,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ],
+      "no-console": [
+        "error",
+        {
+          "allow": [
+            "warn",
+            "error"
+          ]
+        }
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "semi": [
+        "error",
+        "never"
+      ],
+      "sort-keys": [
+        "error",
+        "asc",
+        {
+          "caseSensitive": true,
+          "natural": false
+        }
+      ],
+      "sort-vars": [
+        "error",
+        {
+          "ignoreCase": true
+        }
+      ],
+      "strict": 0
+    }
+  },
+  "prettier": {
+    "printWidth": 60,
+    "semi": false,
+    "trailingComma": "es5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && npm test"
+    }
+  },
+  "lint-staged": {
+    "*.{css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.js": [
+      "eslint --ignore-path .gitignore --fix",
+      "git add"
+    ]
+  },
+  "jest": {
+    "testMatch": [
+      "<rootDir>/**/*Test.js"
+    ],
+    "testEnvironment": "node"
+  }
+}
