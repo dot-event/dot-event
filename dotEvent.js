@@ -1,10 +1,16 @@
 /*global Map Promise Set*/
 
-var map = new Map()
-var em = ""
-var pe = "."
+var af = "after",
+  be = "before",
+  dot = setup.bind(emit),
+  em = "",
+  fnt = "function",
+  map = new Map(),
+  opr = /^[^.]+/,
+  ot = "object",
+  pe = ".",
+  st = "string"
 
-var dot = setup.bind(emit)
 dot.off = setup.bind(off)
 dot.on = setup.bind(on)
 
@@ -43,8 +49,8 @@ function emit(op, p, fn, opts) {
 
   p = op + pe + p
 
-  var b = "before" + cap(p)
-  var a = "after" + cap(p)
+  var a = af + cap(p),
+    b = be + cap(p)
 
   return call(b, d)
     .then(function() {
@@ -95,20 +101,20 @@ function setup() {
     p = em
 
   for (var i = 0; i < a.length; i++) {
-    var opt = a[i]
-    var t = typeof opt
+    var opt = a[i],
+      t = typeof opt
 
-    if (t === "function") {
+    if (t === fnt) {
       fn = opt
-    } else if (t === "string") {
+    } else if (t === st) {
       p = p + pe + opt
-    } else if (t === "object" && opt) {
+    } else if (t === ot && opt) {
       opts = opt
     }
   }
 
   p = p.charAt(0) === pe ? p.slice(1) : p
-  op = p.match(/^[^.]+/)[0]
+  op = p.match(opr)[0]
   p = p.slice(op.length + 1)
 
   return this(op, p, fn, opts)
