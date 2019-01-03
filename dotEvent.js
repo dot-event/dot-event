@@ -1,8 +1,8 @@
 /*global Map Promise Set*/
 
 var map = new Map()
-var empty = ""
-var period = "."
+var em = ""
+var pe = "."
 
 var dot = setup.bind(emit)
 dot.off = setup.bind(off)
@@ -41,7 +41,7 @@ function emit(op, p, fn, opts) {
     sig: {},
   }
 
-  p = op + period + p
+  p = op + pe + p
 
   var b = "before" + cap(p)
   var a = "after" + cap(p)
@@ -56,7 +56,7 @@ function emit(op, p, fn, opts) {
 }
 
 function off(op, p, fn) {
-  p = op + period + p
+  p = op + pe + p
 
   var set = map.get(p)
 
@@ -73,7 +73,7 @@ function on(op, p, fn) {
   var ogp = p,
     set
 
-  p = op + period + p
+  p = op + pe + p
 
   if (map.has(p)) {
     set = map.get(p)
@@ -84,7 +84,7 @@ function on(op, p, fn) {
 
   set.add(fn)
 
-  return off.bind(undefined, op, ogp, fn)
+  return off.bind(null, op, ogp, fn)
 }
 
 function setup() {
@@ -92,21 +92,22 @@ function setup() {
     fn,
     op,
     opts,
-    p = empty
+    p = em
 
   for (var i = 0; i < a.length; i++) {
     var opt = a[i]
+    var t = typeof opt
 
-    if (typeof opt === "function") {
+    if (t === "function") {
       fn = opt
-    } else if (typeof opt === "string") {
-      p = p + period + opt
-    } else if (typeof opt === "object" && opt) {
+    } else if (t === "string") {
+      p = p + pe + opt
+    } else if (t === "object" && opt) {
       opts = opt
     }
   }
 
-  p = p.charAt(0) === period ? p.slice(1) : p
+  p = p.charAt(0) === pe ? p.slice(1) : p
   op = p.match(/^[^.]+/)[0]
   p = p.slice(op.length + 1)
 
