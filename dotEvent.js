@@ -4,28 +4,55 @@ var map = new Map()
 var empty = ""
 var period = "."
 
-var dot = parseArgs.bind(emit)
-dot.off = parseArgs.bind(off)
-dot.on = parseArgs.bind(on)
+var dot = setup.bind(emit)
+dot.off = setup.bind(off)
+dot.on = setup.bind(on)
 
 module.exports = dot
 
-function emit(op, p, fn, opts) {
-  var data = { dot: dot, op: op, opts: opts, prop: p }
+function cap(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1)
+}
 
-  p = op + period + p
+function call(p, data) {
+  var set = map.get(p)
 
-  if (map.has(p)) {
+  if (set && !data.sig.cancel) {
     var promises = []
 
-    map.get(p).forEach(function(fn) {
-      promises.push(fn(data))
+    set.forEach(function(fn) {
+      if (!data.sig.cancel) {
+        promises.push(fn(data))
+      }
     })
 
     return Promise.all(promises)
   } else {
     return Promise.resolve(data)
   }
+}
+
+function emit(op, p, fn, opts) {
+  var data = {
+    dot: dot,
+    op: op,
+    opts: opts,
+    prop: p,
+    sig: {},
+  }
+
+  p = op + period + p
+
+  var b = "before" + cap(p)
+  var a = "after" + cap(p)
+
+  return call(b, data)
+    .then(function() {
+      return call(p, data)
+    })
+    .then(function() {
+      return call(a, data)
+    })
 }
 
 function off(op, p, fn) {
@@ -60,7 +87,7 @@ function on(op, p, fn) {
   return off.bind(undefined, op, ogp, fn)
 }
 
-function parseArgs() {
+function setup() {
   var fn,
     op,
     opts,
