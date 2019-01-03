@@ -10,30 +10,30 @@ dot.on = setup.bind(on)
 
 module.exports = dot
 
-function cap(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1)
+function cap(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function call(p, data) {
+function call(p, d) {
   var set = map.get(p)
 
-  if (set && !data.sig.cancel) {
-    var promises = []
+  if (set && !d.sig.cancel) {
+    var pr = []
 
     set.forEach(function(fn) {
-      if (!data.sig.cancel) {
-        promises.push(fn(data))
+      if (!d.sig.cancel) {
+        pr.push(fn(d))
       }
     })
 
-    return Promise.all(promises)
+    return Promise.all(pr)
   } else {
-    return Promise.resolve(data)
+    return Promise.resolve(d)
   }
 }
 
 function emit(op, p, fn, opts) {
-  var data = {
+  var d = {
     dot: dot,
     op: op,
     opts: opts,
@@ -46,12 +46,12 @@ function emit(op, p, fn, opts) {
   var b = "before" + cap(p)
   var a = "after" + cap(p)
 
-  return call(b, data)
+  return call(b, d)
     .then(function() {
-      return call(p, data)
+      return call(p, d)
     })
     .then(function() {
-      return call(a, data)
+      return call(a, d)
     })
 }
 
@@ -88,13 +88,14 @@ function on(op, p, fn) {
 }
 
 function setup() {
-  var fn,
+  var a = arguments,
+    fn,
     op,
     opts,
     p = empty
 
-  for (var i = 0; i < arguments.length; i++) {
-    var opt = arguments[i]
+  for (var i = 0; i < a.length; i++) {
+    var opt = a[i]
 
     if (typeof opt === "function") {
       fn = opt
