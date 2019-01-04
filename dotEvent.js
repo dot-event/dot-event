@@ -7,7 +7,6 @@ var af = "after",
   fnt = "function",
   m = new Map(),
   ma = new Map(),
-  opr = /^[^.]+/,
   ot = "object",
   pe = ".",
   pr = /[^.]+/g,
@@ -53,10 +52,9 @@ function cAll(p, da) {
   )
 }
 
-function emit(op, p, fn, opts) {
+function emit(p, fn, opts) {
   var d = {
       dot: dot,
-      op: op,
       opts: opts,
       prop: p,
       sig: {},
@@ -66,8 +64,6 @@ function emit(op, p, fn, opts) {
   for (var k in d) {
     da[k] = da[k] || d[k]
   }
-
-  p = op + pe + p
 
   var a = af + cap(p),
     b = be + cap(p)
@@ -90,9 +86,7 @@ function emit(op, p, fn, opts) {
     })
 }
 
-function off(op, p, fn) {
-  p = op + pe + p
-
+function off(p, fn) {
   var s = m.get(p)
 
   if (s) {
@@ -100,15 +94,12 @@ function off(op, p, fn) {
   }
 }
 
-function onBase(m, op, p, fn) {
+function onBase(m, p, fn) {
   if (!fn) {
     return
   }
 
-  var ogp = p,
-    s
-
-  p = op + pe + p
+  var s
 
   if (m.has(p)) {
     s = m.get(p)
@@ -119,15 +110,15 @@ function onBase(m, op, p, fn) {
 
   s.add(fn)
 
-  return off.bind(null, op, ogp, fn)
+  return off.bind(null, p, fn)
 }
 
-function on(op, p, fn) {
-  return onBase(m, op, p, fn)
+function on(p, fn) {
+  return onBase(m, p, fn)
 }
 
-function onAll(op, p, fn) {
-  return onBase(ma, op, p, fn)
+function onAll(p, fn) {
+  return onBase(ma, p, fn)
 }
 
 function reset() {
@@ -138,7 +129,6 @@ function reset() {
 function setup() {
   var a = arguments,
     fn,
-    op,
     opts,
     p = em
 
@@ -152,8 +142,6 @@ function setup() {
   }
 
   p = p.charAt(0) === pe ? p.slice(1) : p
-  op = p.match(opr)[0]
-  p = p.slice(op.length + 1)
 
-  return this(op, p, fn, opts)
+  return this(p, fn, opts)
 }

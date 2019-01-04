@@ -9,11 +9,11 @@ beforeEach(function() {
 test("on", function() {
   var called
 
-  dot.on("emit.a", "b", "c", function() {
+  dot.on("a", "b", "c", function() {
     called = true
   })
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(called).toBe(true)
   })
 })
@@ -21,14 +21,13 @@ test("on", function() {
 test("on args", function() {
   var args
 
-  dot.on("emit.a", "b", "c", function(a) {
+  dot.on("a", "b", "c", function(a) {
     args = a
   })
 
-  return dot("emit.a.b.c", { test: true }).then(function() {
+  return dot("a.b.c", { test: true }).then(function() {
     expect(args).toEqual({
       dot: dot,
-      op: "emit",
       opts: { test: true },
       prop: "a.b.c",
       sig: {},
@@ -39,19 +38,19 @@ test("on args", function() {
 test("on before/after", function() {
   var order = []
 
-  dot.on("afterEmit.a", "b", "c", function() {
+  dot.on("afterA", "b", "c", function() {
     order.push(3)
   })
 
-  dot.on("emit.a", "b", "c", function() {
+  dot.on("a", "b", "c", function() {
     order.push(2)
   })
 
-  dot.on("beforeEmit.a", "b", "c", function() {
+  dot.on("beforeA.b", "c", function() {
     order.push(1)
   })
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(order).toEqual([1, 2, 3])
   })
 })
@@ -59,15 +58,15 @@ test("on before/after", function() {
 test("on before cancel", function() {
   var called
 
-  dot.on("beforeEmit.a", "b", "c", function(options) {
-    options.sig.cancel = true
+  dot.on("beforeA.b", "c", function(opt) {
+    opt.sig.cancel = true
   })
 
-  dot.on("emit.a", "b", "c", function() {
+  dot.on("a", "b", "c", function() {
     called = true
   })
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(called).not.toBe(true)
   })
 })
@@ -75,11 +74,11 @@ test("on before cancel", function() {
 test("onAll", function() {
   var called
 
-  dot.onAll("emit.a", function() {
+  dot.onAll("a", function() {
     called = true
   })
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(called).toBe(true)
   })
 })
@@ -87,19 +86,19 @@ test("onAll", function() {
 test("onAll before/after", function() {
   var order = []
 
-  dot.onAll("afterEmit.a", function() {
+  dot.onAll("afterA.b", function() {
     order.push(3)
   })
 
-  dot.onAll("emit.a", function() {
+  dot.onAll("a", function() {
     order.push(2)
   })
 
-  dot.onAll("beforeEmit.a", function() {
+  dot.onAll("beforeA", function() {
     order.push(1)
   })
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(order).toEqual([1, 2, 3])
   })
 })
@@ -107,13 +106,13 @@ test("onAll before/after", function() {
 test("off", function() {
   var called
 
-  var off = dot.on("emit.a", "b", "c", function() {
+  var off = dot.on("a", "b", "c", function() {
     called = true
   })
 
   off()
 
-  return dot("emit.a.b.c").then(function() {
+  return dot("a.b.c").then(function() {
     expect(called).not.toBe(true)
   })
 })
