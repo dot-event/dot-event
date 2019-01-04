@@ -50,7 +50,9 @@ function cAll(p, da) {
 }
 
 function emit(p, fn, opts) {
-  var d = {
+  var a = af + pe + p,
+    b = be + pe + p,
+    d = {
       dot: dot,
       opts: opts,
       prop: p,
@@ -62,25 +64,15 @@ function emit(p, fn, opts) {
     da[k] = da[k] || d[k]
   }
 
-  var a = af + pe + p,
-    b = be + pe + p
+  var pr = Promise.all([cAll(b, da), call(m, b, d)])
+    .then(function() {
+      return Promise.all([cAll(p, da), call(m, p, d)])
+    })
+    .then(function() {
+      return Promise.all([cAll(a, da), call(m, a, d)])
+    })
 
-  return cAll(b, da)
-    .then(function() {
-      return call(m, b, d)
-    })
-    .then(function() {
-      return cAll(p, da)
-    })
-    .then(function() {
-      return call(m, p, d)
-    })
-    .then(function() {
-      return cAll(a, da)
-    })
-    .then(function() {
-      return call(m, a, d)
-    })
+  return d.sig.value || da.sig.value || pr
 }
 
 function off(p, fn) {

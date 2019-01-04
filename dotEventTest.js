@@ -67,7 +67,7 @@ test("on before/after", function() {
   })
 })
 
-test("on before cancel", function() {
+test("on cancel", function() {
   var called
 
   dot.on("before.a.b", "c", function(opt) {
@@ -81,6 +81,14 @@ test("on before cancel", function() {
   return dot("a.b.c").then(function() {
     expect(called).not.toBe(true)
   })
+})
+
+test("on value", function() {
+  dot.on("before.a.b", "c", function(opt) {
+    opt.sig.value = true
+  })
+
+  expect(dot("a.b.c")).toBe(true)
 })
 
 test("onAll empty", function() {
