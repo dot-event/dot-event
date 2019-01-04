@@ -6,10 +6,22 @@ beforeEach(function() {
   dot.reset()
 })
 
-test("on", function() {
+test("on empty", function() {
   var called
 
-  dot.on("a", "b", "c", function() {
+  dot.on(function() {
+    called = true
+  })
+
+  return dot().then(function() {
+    expect(called).toBe(true)
+  })
+})
+
+test("on props", function() {
+  var called
+
+  dot.on("a", "b.c", function() {
     called = true
   })
 
@@ -21,7 +33,7 @@ test("on", function() {
 test("on args", function() {
   var args
 
-  dot.on("a", "b", "c", function(a) {
+  dot.on("a.b", "c", function(a) {
     args = a
   })
 
@@ -71,7 +83,19 @@ test("on before cancel", function() {
   })
 })
 
-test("onAll", function() {
+test("onAll empty", function() {
+  var called
+
+  dot.onAll(function() {
+    called = true
+  })
+
+  return dot("a.b.c").then(function() {
+    expect(called).toBe(true)
+  })
+})
+
+test("onAll props", function() {
   var called
 
   dot.onAll("a", function() {

@@ -42,14 +42,15 @@ function call(m, p, d) {
 }
 
 function cAll(p, da) {
-  var me = ""
+  var me = "",
+    mt = p.match(pr) || []
 
-  return Promise.all(
-    p.match(pr).map(function(v, i) {
-      me = me + (i > 0 ? pe : em) + v
-      return call(ma, me, da)
-    })
-  )
+  var ps = mt.map(function(v, i) {
+    me = me + (i > 0 ? pe : em) + v
+    return call(ma, me, da)
+  })
+
+  return Promise.all([call(ma, "", da), Promise.all(ps)])
 }
 
 function emit(p, fn, opts) {
