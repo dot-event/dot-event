@@ -134,11 +134,9 @@ function setup() {
       t = typeof opt
 
     fn = t === fnt ? opt : fn
-    p = t === st ? p + pe + opt : p
+    p = t === st ? (p ? p + pe + opt : opt) : p
     opts = t === ot && opt ? opt : opts
   }
-
-  p = p.charAt(0) === pe ? p.slice(1) : p
 
   return this(p, fn, opts)
 }
