@@ -19,10 +19,6 @@ dot.reset = reset
 
 module.exports = dot
 
-function cap(s) {
-  return s.charAt(0).toUpperCase() + s.slice(1)
-}
-
 function call(m, p, d) {
   var s = m.get(p)
 
@@ -66,8 +62,8 @@ function emit(p, fn, opts) {
     da[k] = da[k] || d[k]
   }
 
-  var a = af + cap(p),
-    b = be + cap(p)
+  var a = af + pe + p,
+    b = be + pe + p
 
   return cAll(b, da)
     .then(function() {

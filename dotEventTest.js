@@ -50,7 +50,7 @@ test("on args", function() {
 test("on before/after", function() {
   var order = []
 
-  dot.on("afterA", "b", "c", function() {
+  dot.on("after.a", "b", "c", function() {
     order.push(3)
   })
 
@@ -58,7 +58,7 @@ test("on before/after", function() {
     order.push(2)
   })
 
-  dot.on("beforeA.b", "c", function() {
+  dot.on("before.a.b", "c", function() {
     order.push(1)
   })
 
@@ -70,7 +70,7 @@ test("on before/after", function() {
 test("on before cancel", function() {
   var called
 
-  dot.on("beforeA.b", "c", function(opt) {
+  dot.on("before.a.b", "c", function(opt) {
     opt.sig.cancel = true
   })
 
@@ -110,7 +110,7 @@ test("onAll props", function() {
 test("onAll before/after", function() {
   var order = []
 
-  dot.onAll("afterA.b", function() {
+  dot.onAll("after.a.b", function() {
     order.push(3)
   })
 
@@ -118,7 +118,7 @@ test("onAll before/after", function() {
     order.push(2)
   })
 
-  dot.onAll("beforeA", function() {
+  dot.onAll("before.a", function() {
     order.push(1)
   })
 
