@@ -2,24 +2,30 @@
 
 var af = "after",
   be = "before",
-  dot = setup.bind(emit),
   em = "",
   fnt = "function",
-  m = new Map(),
-  ma = new Map(),
   ot = "object",
   pe = ".",
   pr = /[^.]+/g,
   st = "string"
 
-dot.off = setup.bind(off)
-dot.on = setup.bind(on)
-dot.onAny = setup.bind(onAny)
-dot.reset = reset
+module.exports = function dot() {
+  var dot,
+    state = {
+      anyMap: new Map(),
+      onMap: new Map(),
+    }
 
-module.exports = dot
+  state.dot = dot = setup.bind({ fn: emit, state: state })
+  dot.off = setup.bind({ fn: off, state: state })
+  dot.on = setup.bind({ fn: on, state: state })
+  dot.onAny = setup.bind({ fn: onAny, state: state })
+  dot.reset = reset.bind({ state: state })
 
-function call(m, p, d) {
+  return dot
+}
+
+function call(p, d, m) {
   var s = m.get(p)
 
   if (s) {
@@ -37,23 +43,23 @@ function call(m, p, d) {
   }
 }
 
-function cAll(p, da) {
+function cAll(p, da, m) {
   var me = "",
     mt = p.match(pr) || []
 
   var ps = mt.map(function(v, i) {
     me = me + (i > 0 ? pe : em) + v
-    return call(ma, me, da)
+    return call(me, da, m)
   })
 
-  return Promise.all([call(ma, "", da), Promise.all(ps)])
+  return Promise.all([call("", da, m), Promise.all(ps)])
 }
 
-function emit(p, fn, opts) {
+function emit(p, fn, opts, state) {
   var a = af + pe + p,
     b = be + pe + p,
     d = {
-      dot: dot,
+      dot: state.dot,
       opts: opts,
       prop: p,
       sig: {},
@@ -64,18 +70,27 @@ function emit(p, fn, opts) {
     da[k] = da[k] || d[k]
   }
 
-  var pr = Promise.all([cAll(b, da), call(m, b, d)])
+  var pr = Promise.all([
+    cAll(b, da, state.anyMap),
+    call(b, d, state.onMap),
+  ])
     .then(function() {
-      return Promise.all([cAll(p, da), call(m, p, d)])
+      return Promise.all([
+        cAll(p, da, state.anyMap),
+        call(p, d, state.onMap),
+      ])
     })
     .then(function() {
-      return Promise.all([cAll(a, da), call(m, a, d)])
+      return Promise.all([
+        cAll(a, da, state.anyMap),
+        call(a, d, state.onMap),
+      ])
     })
 
   return d.sig.value || da.sig.value || pr
 }
 
-function off(p, fn) {
+function off(p, fn, m) {
   var s = m.get(p)
 
   if (s) {
@@ -83,7 +98,7 @@ function off(p, fn) {
   }
 }
 
-function onBase(m, p, fn) {
+function onBase(p, fn, m) {
   if (!fn) {
     return
   }
@@ -99,20 +114,20 @@ function onBase(m, p, fn) {
 
   s.add(fn)
 
-  return off.bind(null, p, fn)
+  return off.bind(null, p, fn, m)
 }
 
-function on(p, fn) {
-  return onBase(m, p, fn)
+function on(p, fn, opts, state) {
+  return onBase(p, fn, state.onMap)
 }
 
-function onAny(p, fn) {
-  return onBase(ma, p, fn)
+function onAny(p, fn, opts, state) {
+  return onBase(p, fn, state.anyMap)
 }
 
 function reset() {
-  m = new Map()
-  ma = new Map()
+  this.state.anyMap = new Map()
+  this.state.onMap = new Map()
 }
 
 function setup() {
@@ -130,5 +145,5 @@ function setup() {
     opts = t === ot && opt ? opt : opts
   }
 
-  return this(p, fn, opts)
+  return this.fn(p, fn, opts, this.state)
 }
