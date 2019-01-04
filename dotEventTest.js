@@ -91,10 +91,10 @@ test("on value", function() {
   expect(dot("a.b.c")).toBe(true)
 })
 
-test("onAll empty", function() {
+test("onAny empty", function() {
   var called
 
-  dot.onAll(function() {
+  dot.onAny(function() {
     called = true
   })
 
@@ -103,10 +103,10 @@ test("onAll empty", function() {
   })
 })
 
-test("onAll props", function() {
+test("onAny props", function() {
   var called
 
-  dot.onAll("a", function() {
+  dot.onAny("a", function() {
     called = true
   })
 
@@ -115,18 +115,18 @@ test("onAll props", function() {
   })
 })
 
-test("onAll before/after", function() {
+test("onAny before/after", function() {
   var order = []
 
-  dot.onAll("after.a.b", function() {
+  dot.onAny("after.a.b", function() {
     order.push(3)
   })
 
-  dot.onAll("a", function() {
+  dot.onAny("a", function() {
     order.push(2)
   })
 
-  dot.onAll("before.a", function() {
+  dot.onAny("before.a", function() {
     order.push(1)
   })
 

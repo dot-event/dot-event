@@ -14,7 +14,7 @@ var af = "after",
 
 dot.off = setup.bind(off)
 dot.on = setup.bind(on)
-dot.onAll = setup.bind(onAll)
+dot.onAny = setup.bind(onAny)
 dot.reset = reset
 
 module.exports = dot
@@ -106,7 +106,7 @@ function on(p, fn) {
   return onBase(m, p, fn)
 }
 
-function onAll(p, fn) {
+function onAny(p, fn) {
   return onBase(ma, p, fn)
 }
 
