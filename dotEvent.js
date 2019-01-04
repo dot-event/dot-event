@@ -5,14 +5,18 @@ var af = "after",
   dot = setup.bind(emit),
   em = "",
   fnt = "function",
-  map = new Map(),
+  m = new Map(),
+  ma = new Map(),
   opr = /^[^.]+/,
   ot = "object",
   pe = ".",
+  pr = /[^.]+/g,
   st = "string"
 
 dot.off = setup.bind(off)
 dot.on = setup.bind(on)
+dot.onAll = setup.bind(onAll)
+dot.reset = reset
 
 module.exports = dot
 
@@ -20,13 +24,13 @@ function cap(s) {
   return s.charAt(0).toUpperCase() + s.slice(1)
 }
 
-function call(p, d) {
-  var set = map.get(p)
+function call(m, p, d) {
+  var s = m.get(p)
 
-  if (set && !d.sig.cancel) {
+  if (s) {
     var pr = []
 
-    set.forEach(function(fn) {
+    s.forEach(function(fn) {
       if (!d.sig.cancel) {
         pr.push(fn(d))
       }
@@ -38,13 +42,29 @@ function call(p, d) {
   }
 }
 
+function cAll(p, da) {
+  var me = ""
+
+  return Promise.all(
+    p.match(pr).map(function(v, i) {
+      me = me + (i > 0 ? pe : em) + v
+      return call(ma, me, da)
+    })
+  )
+}
+
 function emit(op, p, fn, opts) {
   var d = {
-    dot: dot,
-    op: op,
-    opts: opts,
-    prop: p,
-    sig: {},
+      dot: dot,
+      op: op,
+      opts: opts,
+      prop: p,
+      sig: {},
+    },
+    da = { sig: {} }
+
+  for (var k in d) {
+    da[k] = da[k] || d[k]
   }
 
   p = op + pe + p
@@ -52,45 +72,67 @@ function emit(op, p, fn, opts) {
   var a = af + cap(p),
     b = be + cap(p)
 
-  return call(b, d)
+  return cAll(b, da)
     .then(function() {
-      return call(p, d)
+      return call(m, b, d)
     })
     .then(function() {
-      return call(a, d)
+      return cAll(p, da)
+    })
+    .then(function() {
+      return call(m, p, d)
+    })
+    .then(function() {
+      return cAll(a, da)
+    })
+    .then(function() {
+      return call(m, a, d)
     })
 }
 
 function off(op, p, fn) {
   p = op + pe + p
 
-  var set = map.get(p)
+  var s = m.get(p)
 
-  if (set) {
-    set.delete(fn)
+  if (s) {
+    s.delete(fn)
   }
 }
 
-function on(op, p, fn) {
+function onBase(m, op, p, fn) {
   if (!fn) {
     return
   }
 
   var ogp = p,
-    set
+    s
 
   p = op + pe + p
 
-  if (map.has(p)) {
-    set = map.get(p)
+  if (m.has(p)) {
+    s = m.get(p)
   } else {
-    set = new Set()
-    map.set(p, set)
+    s = new Set()
+    m.set(p, s)
   }
 
-  set.add(fn)
+  s.add(fn)
 
   return off.bind(null, op, ogp, fn)
+}
+
+function on(op, p, fn) {
+  return onBase(m, op, p, fn)
+}
+
+function onAll(op, p, fn) {
+  return onBase(ma, op, p, fn)
+}
+
+function reset() {
+  m = new Map()
+  ma = new Map()
 }
 
 function setup() {
@@ -104,13 +146,9 @@ function setup() {
     var opt = a[i],
       t = typeof opt
 
-    if (t === fnt) {
-      fn = opt
-    } else if (t === st) {
-      p = p + pe + opt
-    } else if (t === ot && opt) {
-      opts = opt
-    }
+    fn = t === fnt ? opt : fn
+    p = t === st ? p + pe + opt : p
+    opts = t === ot && opt ? opt : opts
   }
 
   p = p.charAt(0) === pe ? p.slice(1) : p

@@ -2,6 +2,10 @@
 
 var dot = require("./dotEvent")
 
+beforeEach(function() {
+  dot.reset()
+})
+
 test("on", function() {
   var called
 
@@ -65,6 +69,38 @@ test("on before cancel", function() {
 
   return dot("emit.a.b.c").then(function() {
     expect(called).not.toBe(true)
+  })
+})
+
+test("onAll", function() {
+  var called
+
+  dot.onAll("emit.a", function() {
+    called = true
+  })
+
+  return dot("emit.a.b.c").then(function() {
+    expect(called).toBe(true)
+  })
+})
+
+test("onAll before/after", function() {
+  var order = []
+
+  dot.onAll("afterEmit.a", function() {
+    order.push(3)
+  })
+
+  dot.onAll("emit.a", function() {
+    order.push(2)
+  })
+
+  dot.onAll("beforeEmit.a", function() {
+    order.push(1)
+  })
+
+  return dot("emit.a.b.c").then(function() {
+    expect(order).toEqual([1, 2, 3])
   })
 })
 
