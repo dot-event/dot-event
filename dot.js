@@ -156,7 +156,7 @@ function on(fn, m, o, p, r, s) {
 
   set.add(fn)
 
-  return off.bind(null, fn, m, null, p, r, s)
+  return off.bind(null, fn, m, o, p, r, s)
 }
 
 // Reset listener maps
