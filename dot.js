@@ -15,132 +15,148 @@ var after = "after",
 //
 module.exports = function dot() {
   var dot,
-    state = {
+    r = {},
+    s = {
       anyMap: new Map(),
       onMap: new Map(),
     }
 
-  state.dot = dot = setup.bind({ fn: emit, state: state })
-  dot.off = setup.bind({ fn: off, state: state })
-  dot.on = setup.bind({ fn: on, state: state })
-  dot.onAny = setup.bind({ fn: onAny, state: state })
-  dot.reset = reset.bind({ state: state })
+  dot = r.dot = setup.bind({ fn: emit, r: r, s: s })
+  dot.off = setup.bind({ fn: off, s: s })
+  dot.on = setup.bind({ fn: on, m: "onMap", s: s })
+  dot.onAny = setup.bind({ fn: on, m: "anyMap", s: s })
+  dot.reset = reset.bind({ state: s })
+  dot.state = s
 
   return dot
 }
 
 // Call "onAny" listener functions
 //
-function callOnAny(p, d, m) {
-  var combos = "",
-    props = p.match(propRegex) || []
+function callOnAny(a, m, p) {
+  // a - arg
+  // m - map
+  // p - prop
+  //
+  var keys = p.match(propRegex) || [],
+    props = ""
 
-  var ps = props.map(function(prop, i) {
-    combos = combos + (i > 0 ? period : empty) + prop
-    return callOn(combos, d, m)
+  var ps = keys.map(function(prop, i) {
+    props = props + (i > 0 ? period : empty) + prop
+    return callOn(a, m, props)
   })
 
-  return Promise.all([callOn("", d, m), Promise.all(ps)])
+  return Promise.all([callOn(a, m, ""), Promise.all(ps)])
 }
 
 // Call "on" listener functions
 //
-function callOn(p, d, m) {
+function callOn(a, m, p) {
+  // a - arg
+  // m - map
+  // p - props
+  //
   var set = m.get(p)
 
   if (set) {
     var promises = []
 
     set.forEach(function(fn) {
-      if (!d.sig.cancel) {
-        promises.push(fn(d))
+      if (!a.sig.cancel) {
+        promises.push(fn(a))
       }
     })
 
-    return Promise.all(promises)
+    return Promise.all(promises).then(function() {
+      return a
+    })
   } else {
-    return Promise.resolve(d)
+    return Promise.resolve(a)
   }
 }
 
 // Call "on" and "onAny" listener functions
 //
-function emit(p, fn, opts, state) {
-  var a = after + period + p,
-    b = before + period + p,
-    d = {
-      dot: state.dot,
-      opts: opts,
+function emit(fn, m, o, p, r, s) {
+  // o - options
+  // p - props
+  // r - refs
+  // s - state
+  //
+  var a1 = {
+      dot: r.dot,
+      opts: o,
       prop: p,
       sig: {},
     },
-    da = { sig: {} }
+    a2 = { sig: {} },
+    pa = after + period + p,
+    pb = before + period + p
 
-  for (var k in d) {
-    da[k] = da[k] || d[k]
+  for (var k in a1) {
+    a2[k] = a2[k] || a1[k]
   }
 
-  var pr = Promise.all([
-    callOnAny(b, da, state.anyMap),
-    callOn(b, d, state.onMap),
+  var promise = Promise.all([
+    callOnAny(a1, s.anyMap, pb),
+    callOn(a2, s.onMap, pb),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(p, da, state.anyMap),
-        callOn(p, d, state.onMap),
+        callOnAny(a1, s.anyMap, p),
+        callOn(a2, s.onMap, p),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(a, da, state.anyMap),
-        callOn(a, d, state.onMap),
+        callOnAny(a1, s.anyMap, pa),
+        callOn(a2, s.onMap, pa),
       ])
     })
 
-  return d.sig.value || da.sig.value || pr
+  return a1.sig.value || a2.sig.value || promise
 }
 
 // Turn off listener(s)
 //
-function off(p, fn, m) {
-  var set = m.get(p)
+function off(fn, m, o, p, r, s) {
+  // fn - listener
+  // m - map
+  // p - props
+  // s - state
+  //
+  var set = s[m].get(p)
 
   if (set) {
-    fn ? m.delete(p) : set.delete(fn)
+    fn ? s[m].delete(p) : set.delete(fn)
   }
 }
 
 // Base listener adding logic
 //
-function onBase(p, fn, m) {
+function on(fn, m, o, p, r, s) {
+  // fn - listener
+  // m - map
+  // p - props
+  // r - refs
+  // s - state
+  //
   if (!fn) {
     return
   }
 
   var set
 
-  if (m.has(p)) {
-    set = m.get(p)
+  if (s[m].has(p)) {
+    set = s[m].get(p)
   } else {
     set = new Set()
-    m.set(p, set)
+    s[m].set(p, set)
   }
 
   set.add(fn)
 
-  return off.bind(null, p, fn, m)
-}
-
-// Add `on` listener
-//
-function on(p, fn, opts, state) {
-  return onBase(p, fn, state.onMap)
-}
-
-// Add `onAny` listener
-//
-function onAny(p, fn, opts, state) {
-  return onBase(p, fn, state.anyMap)
+  return off.bind(null, fn, m, null, p, r, s)
 }
 
 // Reset listener maps
@@ -155,7 +171,7 @@ function reset() {
 function setup() {
   var a = arguments,
     fn,
-    opts,
+    o,
     p = empty
 
   for (var i = 0; i < a.length; i++) {
@@ -164,8 +180,8 @@ function setup() {
 
     fn = t === fnType ? opt : fn
     p = t === strType ? (p ? p + period + opt : opt) : p
-    opts = t === objType && opt ? opt : opts
+    o = t === objType && opt ? opt : o
   }
 
-  return this.fn(p, fn, opts, this.state)
+  return this.fn(fn, this.m, o, p, this.r, this.s)
 }
