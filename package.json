@@ -12,7 +12,7 @@
   },
   "license": "MIT",
   "homepage": "https://github.com/dot-event/dot-event#readme",
-  "main": "dot-event.js",
+  "main": "dot.js",
   "scripts": {
     "fix": "npm run lint -- --fix",
     "lint": "eslint --ignore-path .gitignore --ext=js .",
