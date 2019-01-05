@@ -1,9 +1,11 @@
 {
-  "name": "dot-event2",
-  "version": "0.0.1",
-  "description": "",
+  "name": "dot-event",
+  "version": "3.0.0",
+  "description": "Powerful event emitter",
   "keywords": [
-    ""
+    "event",
+    "emitter",
+    "listener"
   ],
   "author": "dot-event <oss@dot-event.io>",
   "repository": {
