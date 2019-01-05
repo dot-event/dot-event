@@ -41,12 +41,15 @@ function callOnAny(a, m, p) {
   var keys = p.match(propRegex) || [],
     props = ""
 
-  var ps = keys.map(function(prop, i) {
+  var promise = keys.map(function(prop, i) {
     props = props + (i > 0 ? period : empty) + prop
     return callOn(a, m, props)
   })
 
-  return Promise.all([callOn(a, m, ""), Promise.all(ps)])
+  return Promise.all([
+    callOn(a, m, ""),
+    Promise.all(promise),
+  ])
 }
 
 // Call "on" listener functions
