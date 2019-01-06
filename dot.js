@@ -87,19 +87,18 @@ function emit(fn, m, o, p, r, s) {
   // r - refs
   // s - state
   //
-  var a1 = {
+  var a1 = { sig: {} },
+    a2 = { sig: {} },
+    arg = {
       dot: r.dot,
       opts: o,
       prop: p,
-      sig: {},
     },
-    a2 = { sig: {} },
     pa = after + period + p,
     pb = before + period + p
 
-  for (var k in a1) {
-    a2[k] = a2[k] || a1[k]
-  }
+  Object.assign(a1, arg)
+  Object.assign(a2, arg)
 
   var promise = Promise.all([
     callOnAny(a1, s.anyMap, pb),
@@ -116,6 +115,9 @@ function emit(fn, m, o, p, r, s) {
         callOnAny(a1, s.anyMap, pa),
         callOn(a2, s.onMap, pa),
       ])
+    })
+    .then(function() {
+      return arg
     })
 
   return a1.sig.value || a2.sig.value || promise
