@@ -4,8 +4,8 @@
 
 // Helper variables
 //
-var after = "after",
-  before = "before",
+var after = ["after"],
+  before = ["before"],
   empty = "",
   fnType = "function",
   period = ".",
@@ -34,15 +34,14 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callOnAny(a, m, p) {
+function callOnAny(a, k, m) {
   // a - arg
+  // k - keys
   // m - map
-  // p - prop
   //
-  var keys = p.match(propRegex) || [],
-    props = ""
+  var props = ""
 
-  var promise = keys.map(function(prop, i) {
+  var promise = k.map(function(prop, i) {
     props = props + (i > 0 ? period : empty) + prop
     return callOn(a, m, props)
   })
@@ -90,31 +89,37 @@ function emit(fn, m, o, p, r, s) {
   //
   var a1 = { sig: {} },
     a2 = { sig: {} },
-    arg = {
-      dot: r.dot,
-      fn: fn,
-      opts: o,
-      prop: p,
-    },
-    pa = after + period + p,
-    pb = before + period + p
+    keys = p.match(propRegex) || [],
+    pa = after[0] + period + p,
+    pb = before[0] + period + p
+
+  var props = keys.slice(1)
+
+  var arg = {
+    dot: r.dot,
+    fn: fn,
+    op: keys[0],
+    opts: o,
+    prop: props.join("."),
+    props: props,
+  }
 
   Object.assign(a1, arg)
   Object.assign(a2, arg)
 
   var promise = Promise.all([
-    callOnAny(a1, s.anyMap, pb),
+    callOnAny(a1, before.concat(keys), s.anyMap),
     callOn(a2, s.onMap, pb),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(a1, s.anyMap, p),
+        callOnAny(a1, keys, s.anyMap),
         callOn(a2, s.onMap, p),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(a1, s.anyMap, pa),
+        callOnAny(a1, after.concat(keys), s.anyMap),
         callOn(a2, s.onMap, pa),
       ])
     })
