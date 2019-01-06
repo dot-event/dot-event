@@ -98,7 +98,7 @@ function emit(fn, m, o, p, r, s) {
   var arg = {
     dot: r.dot,
     fn: fn,
-    op: keys[0],
+    ns: keys[0],
     opts: o,
     prop: props.join("."),
     props: props,
