@@ -91,6 +91,7 @@ function emit(fn, m, o, p, r, s) {
     a2 = { sig: {} },
     arg = {
       dot: r.dot,
+      fn: fn,
       opts: o,
       prop: p,
     },
