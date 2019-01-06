@@ -148,3 +148,20 @@ test("off", function() {
     expect(called).not.toBe(true)
   })
 })
+
+test("no opts, multiple strings", function() {
+  var args
+
+  dot.on("a.b", "c", function(a) {
+    args = a
+  })
+
+  return dot("a.b.c", "hi").then(function() {
+    expect(args).toEqual({
+      dot: dot,
+      opts: "hi",
+      prop: "a.b.c",
+      sig: {},
+    })
+  })
+})

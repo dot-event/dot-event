@@ -177,6 +177,12 @@ function on(fn, m, o, p, r, s) {
 function reset() {
   this.s.anyMap = new Map()
   this.s.onMap = new Map()
+
+  for (var k in this.s) {
+    if (!(this.s[k] instanceof Map)) {
+      this.s[k] = undefined
+    }
+  }
 }
 
 // Parses arguments for `emit`, `off`, `on`, and `onAny`
@@ -192,11 +198,14 @@ function setup() {
       t = typeof opt
 
     var isFn = t === fnType,
+      isLast = i === a.length - 1,
       isStr = t === strType
 
+    var notProp = isLast && isStr && !o && i > 0
+
     fn = isFn ? opt : fn
-    p = isStr ? (p ? p + period + opt : opt) : p
-    o = !isFn && !isStr ? opt : o
+    p = !notProp && isStr ? (p ? p + period + opt : opt) : p
+    o = notProp || (!isFn && !isStr) ? opt : o
   }
 
   return this.fn(fn, this.m, o, p, this.r, this.s)
