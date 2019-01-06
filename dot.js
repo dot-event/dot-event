@@ -6,7 +6,6 @@ var after = "after",
   before = "before",
   empty = "",
   fnType = "function",
-  objType = "object",
   period = ".",
   propRegex = /[^.]+/g,
   strType = "string"
@@ -25,7 +24,7 @@ module.exports = function dot() {
   dot.off = setup.bind({ fn: off, s: s })
   dot.on = setup.bind({ fn: on, m: "onMap", s: s })
   dot.onAny = setup.bind({ fn: on, m: "anyMap", s: s })
-  dot.reset = reset.bind({ state: s })
+  dot.reset = reset.bind({ s: s })
   dot.state = s
 
   return dot
@@ -165,8 +164,8 @@ function on(fn, m, o, p, r, s) {
 // Reset listener maps
 //
 function reset() {
-  this.state.anyMap = new Map()
-  this.state.onMap = new Map()
+  this.s.anyMap = new Map()
+  this.s.onMap = new Map()
 }
 
 // Parses arguments for `emit`, `off`, `on`, and `onAny`
@@ -181,9 +180,12 @@ function setup() {
     var opt = a[i],
       t = typeof opt
 
-    fn = t === fnType ? opt : fn
-    p = t === strType ? (p ? p + period + opt : opt) : p
-    o = t === objType && opt ? opt : o
+    var isFn = t === fnType,
+      isStr = t === strType
+
+    fn = isFn ? opt : fn
+    p = isStr ? (p ? p + period + opt : opt) : p
+    o = !isFn && !isStr ? opt : o
   }
 
   return this.fn(fn, this.m, o, p, this.r, this.s)
