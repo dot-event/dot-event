@@ -123,9 +123,7 @@ function emit(fn, m, o, p, r, s) {
         callOn(a2, s.onMap, pa),
       ])
     })
-    .then(function() {
-      return arg
-    })
+    .then(arg)
 
   var value = a1.sig.value || a2.sig.value
 
@@ -177,7 +175,7 @@ function on(fn, m, o, p, r, s) {
   return off.bind(null, fn, m, o, p, r, s)
 }
 
-// Reset listener maps
+// Reset state
 //
 function reset() {
   this.s.anyMap = new Map()
@@ -190,7 +188,7 @@ function reset() {
   }
 }
 
-// Parses arguments for `emit`, `off`, `on`, and `onAny`
+// Parse arguments for `emit`, `off`, `on`, and `onAny`
 //
 function setup() {
   var a = arguments,
