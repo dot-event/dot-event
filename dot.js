@@ -1,5 +1,5 @@
 /*global Map Promise Set*/
-// prettier-ignore
+/*prettier-ignore*/
 "use strict";
 
 // Helper variables
