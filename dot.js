@@ -82,6 +82,7 @@ function callOn(a, m, p) {
 // Call "on" and "onAny" listener functions
 //
 function emit(fn, m, o, p, r, s) {
+  // fn - function
   // o - options
   // p - props
   // r - refs
@@ -132,7 +133,7 @@ function emit(fn, m, o, p, r, s) {
 // Turn off listener(s)
 //
 function off(fn, m, o, p, r, s) {
-  // fn - listener
+  // fn - function
   // m - map
   // p - props
   // s - state
@@ -147,7 +148,7 @@ function off(fn, m, o, p, r, s) {
 // Base listener adding logic
 //
 function on(fn, m, o, p, r, s) {
-  // fn - listener
+  // fn - function
   // m - map
   // p - props
   // r - refs
