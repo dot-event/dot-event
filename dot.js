@@ -120,7 +120,12 @@ function emit(fn, m, o, p, r, s) {
       return arg
     })
 
-  return a1.sig.value || a2.sig.value || promise
+  var value = a1.sig.value || a2.sig.value
+
+  var noValue =
+    a1.sig.value === undefined && a2.sig.value === undefined
+
+  return noValue ? promise : value
 }
 
 // Turn off listener(s)
