@@ -81,10 +81,6 @@
         "error",
         "double"
       ],
-      "semi": [
-        "error",
-        "never"
-      ],
       "sort-keys": [
         "error",
         "asc",
