@@ -13,19 +13,18 @@ var empty = "",
 //
 module.exports = function dot() {
   var dot,
-    r = {},
-    s = {}
+    r = {}
 
-  dot = r.dot = setup.bind({ fn: emit, r: r, s: s })
+  dot = r.dot = setup.bind({ fn: emit, r: r })
+  dot.state = {}
 
-  dot.reset = reset.bind({ s: s })
+  dot.reset = reset.bind({ r: r })
   dot.reset()
 
-  dot.off = setup.bind({ fn: off, s: s })
-  dot.state = s
+  dot.off = setup.bind({ fn: off, r: r })
 
-  Object.keys(s).forEach(function(m) {
-    dot[m] = setup.bind({ fn: on, m: m, r: r, s: s })
+  Object.keys(dot.state).forEach(function(m) {
+    dot[m] = setup.bind({ fn: on, m: m, r: r })
   })
 
   return dot
@@ -33,7 +32,7 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callOnAny(a, k, m, s) {
+function callAny(a, k, m, s) {
   // a - arg
   // k - key
   // m - map
@@ -81,12 +80,11 @@ function callOn(a, k, m, s) {
 
 // Call "on" and "onAny" listener functions
 //
-function emit(k, m, o, p, r, s) {
+function emit(k, m, o, p, r) {
   // k - key
   // o - opts
   // p - props
   // r - refs
-  // s - state
   //
   var arg = {
       dot: r.dot,
@@ -95,22 +93,23 @@ function emit(k, m, o, p, r, s) {
       prop: p.str,
       propArr: p.arr,
     },
+    s = r.dot.state,
     sig1 = {},
     sig2 = {}
 
   var promise = Promise.all([
-    callOnAny(arg, k.arr, s.beforeAny, sig1),
+    callAny(arg, k.arr, s.beforeAny, sig1),
     callOn(arg, k.arr, s.beforeOn, sig2),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(arg, k.arr, s.any, sig1),
+        callAny(arg, k.arr, s.any, sig1),
         callOn(arg, k.arr, s.on, sig2),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(arg, k.arr, s.afterAny, sig1),
+        callAny(arg, k.arr, s.afterAny, sig1),
         callOn(arg, k.arr, s.afterOn, sig2),
       ])
     })
@@ -126,13 +125,14 @@ function emit(k, m, o, p, r, s) {
 
 // Turn off listener(s)
 //
-function off(k, m, o, p, r, s) {
+function off(k, m, o, p, r) {
   // k - key
   // m - map
   // o - opts
-  // s - state
+  // r - refs
   //
-  var set = s[m].get(k.str)
+  var s = r.dot.state,
+    set = s[m].get(k.str)
 
   if (set) {
     o.fn ? s[m].delete(k.str) : set.delete(o.fn)
@@ -141,19 +141,19 @@ function off(k, m, o, p, r, s) {
 
 // Base listener adding logic
 //
-function on(k, m, o, p, r, s) {
+function on(k, m, o, p, r) {
   // k - key
   // m - map
   // o - opts
   // p - props
   // r - refs
-  // s - state
   //
   if (!o.fn) {
     return
   }
 
-  var set
+  var s = r.dot.state,
+    set
 
   if (s[m].has(k.str)) {
     set = s[m].get(k.str)
@@ -173,7 +173,7 @@ function on(k, m, o, p, r, s) {
 
   set.add(o.fn)
 
-  return off.bind(null, k, m, o, p, r, s)
+  return off.bind(null, k, m, o, p, r)
 }
 
 function nsEmit() {
@@ -185,17 +185,14 @@ function nsEmit() {
 // Reset state
 //
 function reset() {
-  for (var k in this.s) {
-    this.s[k] = undefined
-  }
-  Object.assign(this.s, {
+  this.r.dot.state = {
     afterAny: new Map(),
     afterOn: new Map(),
     any: new Map(),
     beforeAny: new Map(),
     beforeOn: new Map(),
     on: new Map(),
-  })
+  }
 }
 
 // Parse arguments for `emit`, `off`, `on`, and `onAny`
@@ -232,5 +229,5 @@ function setup() {
   p.ns = k.arr[0]
   p.str = p.arr.join(period)
 
-  return this.fn(k, this.m, o, p, this.r, this.s)
+  return this.fn(k, this.m, o, p, this.r)
 }
