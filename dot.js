@@ -16,12 +16,9 @@ module.exports = function dot() {
     r = {}
 
   dot = r.dot = setup.bind({ fn: emit, r: r })
-  dot.state = {}
-
+  dot.off = setup.bind({ fn: off, r: r })
   dot.reset = reset.bind({ r: r })
   dot.reset()
-
-  dot.off = setup.bind({ fn: off, r: r })
 
   Object.keys(dot.state).forEach(function(m) {
     dot[m] = setup.bind({ fn: on, m: m, r: r })
