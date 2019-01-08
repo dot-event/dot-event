@@ -6,6 +6,7 @@
 //
 var after = ["after"],
   before = ["before"],
+  bnType = "boolean",
   empty = "",
   fnType = "function",
   objType = "object",
@@ -193,7 +194,8 @@ function setup() {
     var opt = a[i],
       t = typeof opt
 
-    var isFn = t === fnType,
+    var isBn = t === bnType,
+      isFn = t === fnType,
       isObj = t === objType,
       isStr = t === strType
 
@@ -201,6 +203,7 @@ function setup() {
       k.arr = k.arr.concat(opt.split(period))
     }
 
+    o.bool = isBn ? opt : o.bool
     o.fn = isFn ? opt : o.fn
     o.obj = isObj ? opt : o.obj
     o.str = isStr ? opt : o.str
