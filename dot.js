@@ -6,10 +6,9 @@
 //
 var after = ["after"],
   before = ["before"],
-  empty = "",
   fnType = "function",
+  objType = "object",
   period = ".",
-  propRegex = /[^.]+/g,
   strType = "string"
 
 // `dot` instance factory
@@ -34,21 +33,21 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callOnAny(a, k, m, s) {
+function callOnAny(a, m, p, s) {
   // a - arg
-  // k - keys
   // m - map
+  // p - props
   // s - signal
   //
-  var props = ""
+  var props = []
 
-  var promise = k.map(function(prop, i) {
-    props = props + (i > 0 ? period : empty) + prop
+  var promise = p.map(function(prop) {
+    props.push(prop)
     return callOn(a, m, props, s)
   })
 
   return Promise.all([
-    callOn(a, m, "", s),
+    callOn(a, m, [], s),
     Promise.all(promise),
   ])
 }
@@ -61,7 +60,7 @@ function callOn(a, m, p, s) {
   // p - props
   // s - signal
   //
-  var set = m.get(p)
+  var set = m.get(p.join(period))
 
   if (set) {
     var promises = []
@@ -89,36 +88,40 @@ function emit(fn, m, o, p, r, s) {
   // r - refs
   // s - state
   //
-  var keys = p.match(propRegex) || [],
-    pa = after[0] + period + p,
-    pb = before[0] + period + p,
+  var pa = after.concat(p),
+    pb = before.concat(p),
     sig1 = {},
     sig2 = {}
 
-  var props = keys.slice(1)
+  var propArr = p.slice(1)
 
-  var arg = Object.freeze({
+  var arg = {
     dot: r.dot,
-    fn: fn,
-    ns: keys[0],
-    opts: o,
-    prop: props.join("."),
-    props: props,
-  })
+    opt: {
+      fn: o.fn,
+      obj: o.obj,
+      str: o.str,
+    },
+    prop: {
+      arr: propArr,
+      ns: p[0],
+      str: propArr.join("."),
+    },
+  }
 
   var promise = Promise.all([
-    callOnAny(arg, before.concat(keys), s.anyMap, sig1),
+    callOnAny(arg, s.anyMap, pb, sig1),
     callOn(arg, s.onMap, pb, sig2),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(arg, keys, s.anyMap, sig1),
+        callOnAny(arg, s.anyMap, p, sig1),
         callOn(arg, s.onMap, p, sig2),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(arg, after.concat(keys), s.anyMap, sig1),
+        callOnAny(arg, s.anyMap, pa, sig1),
         callOn(arg, s.onMap, pa, sig2),
       ])
     })
@@ -140,10 +143,11 @@ function off(fn, m, o, p, r, s) {
   // p - props
   // s - state
   //
-  var set = s[m].get(p)
+  var prop = p.join(period),
+    set = s[m].get(prop)
 
   if (set) {
-    fn ? s[m].delete(p) : set.delete(fn)
+    fn ? s[m].delete(prop) : set.delete(fn)
   }
 }
 
@@ -160,13 +164,14 @@ function on(fn, m, o, p, r, s) {
     return
   }
 
-  var set
+  var prop = p.join(period),
+    set
 
-  if (s[m].has(p)) {
-    set = s[m].get(p)
+  if (s[m].has(prop)) {
+    set = s[m].get(prop)
   } else {
     set = new Set()
-    s[m].set(p, set)
+    s[m].set(prop, set)
   }
 
   set.add(fn)
@@ -192,22 +197,31 @@ function reset() {
 function setup() {
   var a = arguments,
     fn,
-    o,
-    p = empty
+    obj,
+    p = [],
+    str
 
   for (var i = 0; i < a.length; i++) {
     var opt = a[i],
       t = typeof opt
 
     var isFn = t === fnType,
-      isLast = i === a.length - 1,
+      isObj = t === objType,
       isStr = t === strType
 
-    var notProp = isLast && isStr && !o && i > 0
+    if (isStr && (i == 0 || i < a.length - 1)) {
+      p = p.concat(opt.split(period))
+    }
 
     fn = isFn ? opt : fn
-    p = !notProp && isStr ? (p ? p + period + opt : opt) : p
-    o = notProp || (!isFn && !isStr) ? opt : o
+    obj = isObj ? opt : obj
+    str = isStr ? opt : str
+  }
+
+  var o = {
+    fn: fn,
+    obj: obj,
+    str: str,
   }
 
   return this.fn(fn, this.m, o, p, this.r, this.s)
