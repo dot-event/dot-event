@@ -34,30 +34,32 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callOnAny(a, k, m) {
+function callOnAny(a, k, m, s) {
   // a - arg
   // k - keys
   // m - map
+  // s - signal
   //
   var props = ""
 
   var promise = k.map(function(prop, i) {
     props = props + (i > 0 ? period : empty) + prop
-    return callOn(a, m, props)
+    return callOn(a, m, props, s)
   })
 
   return Promise.all([
-    callOn(a, m, ""),
+    callOn(a, m, "", s),
     Promise.all(promise),
   ])
 }
 
 // Call "on" listener functions
 //
-function callOn(a, m, p) {
+function callOn(a, m, p, s) {
   // a - arg
   // m - map
   // p - props
+  // s - signal
   //
   var set = m.get(p)
 
@@ -65,8 +67,8 @@ function callOn(a, m, p) {
     var promises = []
 
     set.forEach(function(fn) {
-      if (!a.sig.cancel) {
-        promises.push(fn(a))
+      if (!s.cancel) {
+        promises.push(fn(a, s))
       }
     })
 
@@ -87,48 +89,45 @@ function emit(fn, m, o, p, r, s) {
   // r - refs
   // s - state
   //
-  var a1 = { sig: {} },
-    a2 = { sig: {} },
-    keys = p.match(propRegex) || [],
+  var keys = p.match(propRegex) || [],
     pa = after[0] + period + p,
-    pb = before[0] + period + p
+    pb = before[0] + period + p,
+    sig1 = {},
+    sig2 = {}
 
   var props = keys.slice(1)
 
-  var arg = {
+  var arg = Object.freeze({
     dot: r.dot,
     fn: fn,
     ns: keys[0],
     opts: o,
     prop: props.join("."),
     props: props,
-  }
-
-  Object.assign(a1, arg)
-  Object.assign(a2, arg)
+  })
 
   var promise = Promise.all([
-    callOnAny(a1, before.concat(keys), s.anyMap),
-    callOn(a2, s.onMap, pb),
+    callOnAny(arg, before.concat(keys), s.anyMap, sig1),
+    callOn(arg, s.onMap, pb, sig2),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(a1, keys, s.anyMap),
-        callOn(a2, s.onMap, p),
+        callOnAny(arg, keys, s.anyMap, sig1),
+        callOn(arg, s.onMap, p, sig2),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(a1, after.concat(keys), s.anyMap),
-        callOn(a2, s.onMap, pa),
+        callOnAny(arg, after.concat(keys), s.anyMap, sig1),
+        callOn(arg, s.onMap, pa, sig2),
       ])
     })
     .then(arg)
 
-  var value = a1.sig.value || a2.sig.value
+  var value = sig1.value || sig2.value
 
   var noValue =
-    a1.sig.value === undefined && a2.sig.value === undefined
+    sig1.value === undefined && sig2.value === undefined
 
   return noValue ? promise : value
 }

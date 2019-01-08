@@ -44,7 +44,6 @@ test("on args", function() {
       opts: { test: true },
       prop: "b.c",
       props: ["b", "c"],
-      sig: {},
     })
   })
 })
@@ -72,8 +71,8 @@ test("on before/after", function() {
 test("on cancel", function() {
   var called
 
-  dot.on("before.a.b", "c", function(opt) {
-    opt.sig.cancel = true
+  dot.on("before.a.b", "c", function(opt, sig) {
+    sig.cancel = true
   })
 
   dot.on("a", "b", "c", function() {
@@ -86,8 +85,8 @@ test("on cancel", function() {
 })
 
 test("on value", function() {
-  dot.on("before.a.b", "c", function(opt) {
-    opt.sig.value = true
+  dot.on("before.a.b", "c", function(opt, sig) {
+    sig.value = true
   })
 
   expect(dot("a.b.c")).toBe(true)
@@ -165,7 +164,6 @@ test("no opts, multiple strings", function() {
       opts: "hi",
       prop: "b.c",
       props: ["b", "c"],
-      sig: {},
     })
   })
 })
