@@ -40,10 +40,7 @@ test("on args", function() {
   return dot("a.b.c", { test: true }).then(function() {
     expect(args).toEqual({
       dot: dot,
-      opt: {
-        obj: { test: true },
-        str: "a.b.c",
-      },
+      opt: { test: true },
       prop: { arr: ["b", "c"], ns: "a", str: "b.c" },
     })
   })
@@ -161,7 +158,7 @@ test("no opts, multiple strings", function() {
   return dot("a.b.c", "hi").then(function() {
     expect(args).toEqual({
       dot: dot,
-      opt: { fn: undefined, obj: undefined, str: "hi" },
+      opt: "hi",
       prop: { arr: ["b", "c"], ns: "a", str: "b.c" },
     })
   })

@@ -6,10 +6,8 @@
 //
 var after = ["after"],
   before = ["before"],
-  bnType = "boolean",
   empty = "",
   fnType = "function",
-  objType = "object",
   period = ".",
   strType = "string"
 
@@ -92,7 +90,7 @@ function emit(k, m, o, p, r, s) {
   //
   var arg = {
       dot: r.dot,
-      opt: o,
+      opt: o.opt,
       prop: p,
     },
     ka = after.concat(k.arr),
@@ -194,19 +192,15 @@ function setup() {
     var opt = a[i],
       t = typeof opt
 
-    var isBn = t === bnType,
-      isFn = t === fnType,
-      isObj = t === objType,
+    var isFn = t === fnType,
       isStr = t === strType
 
     if (isStr && (i == 0 || i < a.length - 1)) {
       k.arr = k.arr.concat(opt.split(period))
     }
 
-    o.bool = isBn ? opt : o.bool
     o.fn = isFn ? opt : o.fn
-    o.obj = isObj ? opt : o.obj
-    o.str = isStr ? opt : o.str
+    o.opt = opt ? opt : o.opt
   }
 
   k.str = k.arr.join(period)
