@@ -192,15 +192,20 @@ function setup() {
     var opt = a[i],
       t = typeof opt
 
-    var isFn = t === fnType,
+    var isFirst = i === 0,
+      isFn = t === fnType,
+      isLast = i === a.length - 1,
       isStr = t === strType
 
-    if (isStr && (i == 0 || i < a.length - 1)) {
+    if (isStr && (isFirst || !isLast)) {
       k.arr = k.arr.concat(opt.split(period))
     }
 
+    if (!isFirst || (isFirst && !isStr)) {
+      o.opt = opt ? opt : o.opt
+    }
+
     o.fn = isFn ? opt : o.fn
-    o.opt = opt ? opt : o.opt
   }
 
   k.str = k.arr.join(period)
