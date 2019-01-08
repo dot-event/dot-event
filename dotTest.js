@@ -150,4 +150,16 @@ describe("dot", function() {
       expect(called).not.toBe(true)
     })
   })
+
+  test("emit helper", function() {
+    var called
+
+    dot.on("a.b.c", function() {
+      called = true
+    })
+
+    return dot.a("b.c").then(function() {
+      expect(called).toBe(true)
+    })
+  })
 })

@@ -23,8 +23,13 @@ module.exports = function dot() {
 
   dot = r.dot = setup.bind({ fn: emit, r: r, s: s })
   dot.off = setup.bind({ fn: off, s: s })
-  dot.on = setup.bind({ fn: on, m: "onMap", s: s })
-  dot.onAny = setup.bind({ fn: on, m: "anyMap", s: s })
+  dot.on = setup.bind({ fn: on, m: "onMap", r: r, s: s })
+  dot.onAny = setup.bind({
+    fn: on,
+    m: "anyMap",
+    r: r,
+    s: s,
+  })
   dot.reset = reset.bind({ s: s })
   dot.state = s
 
@@ -162,11 +167,26 @@ function on(k, m, o, p, r, s) {
   } else {
     set = new Set()
     s[m].set(k.str, set)
+
+    r.dot[p.ns] =
+      r.dot[p.ns] ||
+      nsEmit.bind({
+        fn: emit,
+        p: p,
+        r: r,
+        s: s,
+      })
   }
 
   set.add(o.fn)
 
   return off.bind(null, k, m, o, p, r, s)
+}
+
+function nsEmit() {
+  var a = arguments
+  a[0] = this.p.ns + period + a[0]
+  return setup.apply(this, a)
 }
 
 // Reset state
