@@ -186,10 +186,8 @@ function reset() {
 //
 function setup() {
   var a = arguments,
-    fn,
-    obj,
-    prop = [],
-    str
+    k = { arr: [] },
+    o = {}
 
   for (var i = 0; i < a.length; i++) {
     var opt = a[i],
@@ -200,30 +198,21 @@ function setup() {
       isStr = t === strType
 
     if (isStr && (i == 0 || i < a.length - 1)) {
-      prop = prop.concat(opt.split(period))
+      k.arr = k.arr.concat(opt.split(period))
     }
 
-    fn = isFn ? opt : fn
-    obj = isObj ? opt : obj
-    str = isStr ? opt : str
+    o.fn = isFn ? opt : o.fn
+    o.obj = isObj ? opt : o.obj
+    o.str = isStr ? opt : o.str
   }
 
-  var o = {
-    fn: fn,
-    obj: obj,
-    str: str,
-  }
+  k.str = k.arr.join(period)
 
-  var k = {
-    arr: prop,
-    str: prop.join(period),
-  }
-
-  var notNs = prop.slice(1)
+  var notNs = k.arr.slice(1)
 
   var p = {
     arr: notNs,
-    ns: prop[0],
+    ns: k.arr[0],
     str: notNs.join(period),
   }
 
