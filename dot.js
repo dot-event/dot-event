@@ -4,9 +4,7 @@
 
 // Helper variables
 //
-var after = ["after"],
-  before = ["before"],
-  empty = "",
+var empty = "",
   fnType = "function",
   period = ".",
   strType = "string"
@@ -16,22 +14,19 @@ var after = ["after"],
 module.exports = function dot() {
   var dot,
     r = {},
-    s = {
-      anyMap: new Map(),
-      onMap: new Map(),
-    }
+    s = {}
 
   dot = r.dot = setup.bind({ fn: emit, r: r, s: s })
-  dot.off = setup.bind({ fn: off, s: s })
-  dot.on = setup.bind({ fn: on, m: "onMap", r: r, s: s })
-  dot.onAny = setup.bind({
-    fn: on,
-    m: "anyMap",
-    r: r,
-    s: s,
-  })
+
   dot.reset = reset.bind({ s: s })
+  dot.reset()
+
+  dot.off = setup.bind({ fn: off, s: s })
   dot.state = s
+
+  Object.keys(s).forEach(function(m) {
+    dot[m] = setup.bind({ fn: on, m: m, r: r, s: s })
+  })
 
   return dot
 }
@@ -100,25 +95,23 @@ function emit(k, m, o, p, r, s) {
       prop: p.str,
       propArr: p.arr,
     },
-    ka = after.concat(k.arr),
-    kb = before.concat(k.arr),
     sig1 = {},
     sig2 = {}
 
   var promise = Promise.all([
-    callOnAny(arg, kb, s.anyMap, sig1),
-    callOn(arg, kb, s.onMap, sig2),
+    callOnAny(arg, k.arr, s.beforeAny, sig1),
+    callOn(arg, k.arr, s.beforeOn, sig2),
   ])
     .then(function() {
       return Promise.all([
-        callOnAny(arg, k.arr, s.anyMap, sig1),
-        callOn(arg, k.arr, s.onMap, sig2),
+        callOnAny(arg, k.arr, s.any, sig1),
+        callOn(arg, k.arr, s.on, sig2),
       ])
     })
     .then(function() {
       return Promise.all([
-        callOnAny(arg, ka, s.anyMap, sig1),
-        callOn(arg, ka, s.onMap, sig2),
+        callOnAny(arg, k.arr, s.afterAny, sig1),
+        callOn(arg, k.arr, s.afterOn, sig2),
       ])
     })
     .then(arg)
@@ -192,14 +185,17 @@ function nsEmit() {
 // Reset state
 //
 function reset() {
-  this.s.anyMap = new Map()
-  this.s.onMap = new Map()
-
   for (var k in this.s) {
-    if (!(this.s[k] instanceof Map)) {
-      this.s[k] = undefined
-    }
+    this.s[k] = undefined
   }
+  Object.assign(this.s, {
+    afterAny: new Map(),
+    afterOn: new Map(),
+    any: new Map(),
+    beforeAny: new Map(),
+    beforeOn: new Map(),
+    on: new Map(),
+  })
 }
 
 // Parse arguments for `emit`, `off`, `on`, and `onAny`

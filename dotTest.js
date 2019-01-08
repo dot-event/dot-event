@@ -52,7 +52,7 @@ describe("dot", function() {
   test("on before/after", function() {
     var order = []
 
-    dot.on("after.a", "b", "c", function() {
+    dot.afterOn("a", "b", "c", function() {
       order.push(3)
     })
 
@@ -60,7 +60,7 @@ describe("dot", function() {
       order.push(2)
     })
 
-    dot.on("before.a.b", "c", function() {
+    dot.beforeOn("a.b", "c", function() {
       order.push(1)
     })
 
@@ -72,7 +72,7 @@ describe("dot", function() {
   test("on cancel", function() {
     var called
 
-    dot.on("before.a.b", "c", function(opt, sig) {
+    dot.beforeOn("a.b", "c", function(opt, sig) {
       sig.cancel = true
     })
 
@@ -86,7 +86,7 @@ describe("dot", function() {
   })
 
   test("on value", function() {
-    dot.on("before.a.b", "c", function(opt, sig) {
+    dot.beforeOn("a.b", "c", function(opt, sig) {
       sig.value = true
     })
 
@@ -96,7 +96,7 @@ describe("dot", function() {
   test("onAny empty", function() {
     var called
 
-    dot.onAny(function() {
+    dot.any(function() {
       called = true
     })
 
@@ -108,7 +108,7 @@ describe("dot", function() {
   test("onAny props", function() {
     var called
 
-    dot.onAny("a", function() {
+    dot.any("a", function() {
       called = true
     })
 
@@ -120,15 +120,15 @@ describe("dot", function() {
   test("onAny before/after", function() {
     var order = []
 
-    dot.onAny("after.a.b", function() {
+    dot.afterAny("a.b", function() {
       order.push(3)
     })
 
-    dot.onAny("a", function() {
+    dot.any("a", function() {
       order.push(2)
     })
 
-    dot.onAny("before.a", function() {
+    dot.beforeAny("a", function() {
       order.push(1)
     })
 
