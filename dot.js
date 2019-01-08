@@ -89,16 +89,15 @@ function emit(k, m, o, p, r, s) {
   // r - refs
   // s - state
   //
-  var ka = after.concat(k.arr),
+  var arg = {
+      dot: r.dot,
+      opt: o,
+      prop: p,
+    },
+    ka = after.concat(k.arr),
     kb = before.concat(k.arr),
     sig1 = {},
     sig2 = {}
-
-  var arg = {
-    dot: r.dot,
-    opt: o,
-    prop: p,
-  }
 
   var promise = Promise.all([
     callOnAny(arg, kb, s.anyMap, sig1),
