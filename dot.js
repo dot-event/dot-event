@@ -90,8 +90,10 @@ function emit(k, m, o, p, r, s) {
   //
   var arg = {
       dot: r.dot,
+      ns: p.ns,
       opt: o.opt,
-      prop: p,
+      prop: p.str,
+      propArr: p.arr,
     },
     ka = after.concat(k.arr),
     kb = before.concat(k.arr),

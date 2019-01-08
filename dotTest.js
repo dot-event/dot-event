@@ -41,8 +41,10 @@ describe("dot", function() {
     return dot("a.b.c", { test: true }).then(function() {
       expect(args).toEqual({
         dot: dot,
+        ns: "a",
         opt: { test: true },
-        prop: { arr: ["b", "c"], ns: "a", str: "b.c" },
+        prop: "b.c",
+        propArr: ["b", "c"],
       })
     })
   })

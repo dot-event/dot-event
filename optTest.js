@@ -17,8 +17,10 @@ describe("opt", function() {
     return dot("a.b.c", "hi").then(function() {
       expect(args).toEqual({
         dot: dot,
+        ns: "a",
         opt: "hi",
-        prop: { arr: ["b", "c"], ns: "a", str: "b.c" },
+        prop: "b.c",
+        propArr: ["b", "c"],
       })
     })
   })
@@ -33,7 +35,9 @@ describe("opt", function() {
     return dot("a").then(function() {
       expect(args).toEqual({
         dot: dot,
-        prop: { arr: [], ns: "a", str: "" },
+        ns: "a",
+        prop: "",
+        propArr: [],
       })
     })
   })
@@ -49,7 +53,8 @@ describe("opt", function() {
       expect(args).toEqual({
         dot: dot,
         opt: true,
-        prop: { arr: [], str: "" },
+        prop: "",
+        propArr: [],
       })
     })
   })
