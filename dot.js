@@ -187,7 +187,8 @@ function reset() {
 function setup() {
   var a = arguments,
     k = { arr: [] },
-    o = {}
+    o = {},
+    p = {}
 
   for (var i = 0; i < a.length; i++) {
     var opt = a[i],
@@ -208,13 +209,9 @@ function setup() {
 
   k.str = k.arr.join(period)
 
-  var notNs = k.arr.slice(1)
-
-  var p = {
-    arr: notNs,
-    ns: k.arr[0],
-    str: notNs.join(period),
-  }
+  p.arr = k.arr.slice(1)
+  p.ns = k.arr[0]
+  p.str = p.arr.join(period)
 
   return this.fn(k, this.m, o, p, this.r, this.s)
 }
