@@ -67,9 +67,7 @@ function callOn(a, k, m, s) {
       }
     })
 
-    return Promise.all(promises).then(function() {
-      return a
-    })
+    return Promise.all(promises).then(a)
   } else {
     return Promise.resolve(a)
   }
