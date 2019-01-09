@@ -174,4 +174,16 @@ describe("dot", function() {
       expect(called).toBe(true)
     })
   })
+
+  test("emit helper without props", function() {
+    var called
+
+    dot.on("a", function() {
+      called = true
+    })
+
+    return dot.a().then(function() {
+      expect(called).toBe(true)
+    })
+  })
 })

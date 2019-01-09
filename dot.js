@@ -67,7 +67,9 @@ function callOn(a, k, m, s) {
       }
     })
 
-    return Promise.all(promises).then(a)
+    return Promise.all(promises).then(function() {
+      return a
+    })
   } else {
     return Promise.resolve(a)
   }
@@ -108,7 +110,9 @@ function emit(k, m, o, p, r) {
         callOn(arg, k.arr, s.afterOn, sig2),
       ])
     })
-    .then(arg)
+    .then(function() {
+      return arg
+    })
 
   var value = sig1.value || sig2.value
 
@@ -172,8 +176,16 @@ function on(k, m, o, p, r) {
 }
 
 function nsEmit() {
-  var a = arguments
-  a[0] = this.p.ns + period + a[0]
+  var a = Array.prototype.slice.call(arguments)
+
+  if (typeof a[0] === "string") {
+    a[0] = this.p.ns + period + a[0]
+  } else if (Array.isArray(a[0])) {
+    a[0][0] = this.p.ns + period + a[0][0]
+  } else {
+    a.unshift(this.p.ns)
+  }
+
   return setup.apply(this, a)
 }
 
