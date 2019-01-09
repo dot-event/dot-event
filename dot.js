@@ -199,23 +199,25 @@ function setup() {
     p = {}
 
   for (var i = 0; i < a.length; i++) {
-    var opt = a[i],
+    var isFirst = i === 0,
+      isLast = i === a.length - 1,
+      opt = a[i]
+
+    var isArray = Array.isArray(opt),
       t = typeof opt
 
-    var isFirst = i === 0,
-      isFn = t === fnType,
-      isLast = i === a.length - 1,
+    var isFn = t === fnType,
       isStr = t === strType
 
-    if (isStr && (isFirst || !isLast)) {
-      k.arr = k.arr.concat(opt.split(period))
-    }
-
-    if (!isFirst || (isFirst && !isStr)) {
-      o.opt = opt ? opt : o.opt
+    if ((isArray || isStr) && (isFirst || !isLast)) {
+      k.arr = k.arr.concat(isStr ? opt.split(period) : opt)
     }
 
     o.fn = isFn ? opt : o.fn
+
+    if (!isFirst || (isFirst && !isArray && !isStr)) {
+      o.opt = opt ? opt : o.opt
+    }
   }
 
   k.str = k.arr.join(period)

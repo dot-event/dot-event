@@ -19,10 +19,22 @@ describe("dot", function() {
     })
   })
 
-  test("on props", function() {
+  test("on string props", function() {
     var called
 
     dot.on("a", "b.c", function() {
+      called = true
+    })
+
+    return dot("a.b.c").then(function() {
+      expect(called).toBe(true)
+    })
+  })
+
+  test("on array props", function() {
+    var called
+
+    dot.on(["a"], ["b", "c"], function() {
       called = true
     })
 
