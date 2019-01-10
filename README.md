@@ -2,7 +2,7 @@
 
 An event API enabling the new library ecosystem.
 
-![neutron star](https://media3.giphy.com/media/l3dj5M4YLaFww31V6/giphy.gif)
+![neutron star](neutron.gif)
 
 ## Basics
 
