@@ -34,8 +34,8 @@ dot.afterAny("mylib", function() {})
 
 The end user builds their own stack, so dot-event packages are often dependency-free and small. Check out some examples:
 
-| Library | Description                   | URL                                |
-| ------- | ----------------------------- | ---------------------------------- |
-| arg     | Run functions from CLI or web | https://github.com/dot-event/arg   |
-| log     | Log functions                 | https://github.com/dot-event/log   |
-| store   | Immutable store               | https://github.com/dot-event/store |
+| Library | Description                   | URL                                 |
+| ------- | ----------------------------- | ----------------------------------- |
+| arg     | Run functions from CLI or web | https://github.com/dot-event/arg    |
+| log     | Log functions                 | https://github.com/dot-event/log2   |
+| store   | Immutable store               | https://github.com/dot-event/store2 |
