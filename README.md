@@ -1,38 +1,77 @@
 # dot-event
 
-An event API enabling the new library ecosystem.
+Javascript event emitter, foundation of everything.
 
 ![neutron star](neutron.gif)
 
-## Basics
+## Buzzwords
 
-Dot-event provides an interface for defining and calling functions:
+- Amazing logging
+- Async-first
+- Extend anything (before, during, after)
+- Dependency decoupling
+- Micro (<1kb compressed & gzipped)
+
+## Story
+
+One day, a `dot` instance was born:
 
 ```js
 dot = require("dot-event")()
-dot.any("mylib", function() {})
-dot.mylib() // calls function
 ```
 
-If you were to export `dot`, it would appear no different from any other library interface. However, this is no normal library interface.
-
-## Extensibile
-
-Dot-event functions are highly extensible. This is how easy it is to add logging for all your functions:
+Each time `dot` went into a composer, the composer added some functionality to it:
 
 ```js
-require("@dot-event/log")(dot)
-dot.mylib(true) // 2019-01-10T21:48:53.430Z ℹ️ mylib true
+module.exports = function(dot) {
+  dot.any("sayHi", function() {
+    console.log("hi!")
+  })
+}
 ```
 
-Other libraries can take advantage of functions like `beforeAny` and `afterAny` to add logic to any function:
+The user had an easy time composing their `dot`:
 
 ```js
-dot.beforeAny("mylib", function() {})
-dot.afterAny("mylib", function() {})
+require("./hi")(dot)
+require("./whatsUp")(dot)
+require("./yo")(dot)
+
+dot.sayHi()
 ```
 
-The end user builds their own stack, so dot-event packages are often dependency-free and small. Check out some examples:
+Far away, a library author noticed the first argument to the function behaves as expected...
+
+```js
+dot.any("say", function(arg) {
+  console.log("arg:", arg)
+})
+
+dot.say("yo") // arg: yo
+```
+
+But the second argument does not!
+
+```js
+dot.any("saySomething", function(arg, opts) {
+  console.log("arg:", arg)
+  console.log("opts:", opts)
+})
+
+dot.say("yo", "hello")
+// arg: hello
+// opts: { dot: <DotEvent>, ns: "saySomething", prop: "yo", propArr: ["yo"] }
+```
+
+And adding even more arguments only added more props!
+
+```js
+dot.say("sup", "yo", "hello")
+// arg: hello
+// opts: { dot: <DotEvent>, ns: "saySomething", prop: "sup.yo", propArr: ["sup", "yo"] }
+```
+
+### Existing dot composers
 
 | Library | Description                   | URL                                 |
 | ------- | ----------------------------- | ----------------------------------- |
