@@ -71,7 +71,7 @@ dot.say("sup", "yo", "hello")
 // opts: { dot: <DotEvent>, ns: "say", prop: "sup.yo", propArr: ["sup", "yo"] }
 ```
 
-And thus his journey began...
+And thus their journey began...
 
 ### Existing dot composers
 
