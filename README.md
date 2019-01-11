@@ -53,14 +53,14 @@ dot.say("yo") // arg: yo
 But the second argument does not!
 
 ```js
-dot.any("saySomething", function(arg, opts) {
+dot.any("say", function(arg, opts) {
   console.log("arg:", arg)
   console.log("opts:", opts)
 })
 
 dot.say("yo", "hello")
 // arg: hello
-// opts: { dot: <DotEvent>, ns: "saySomething", prop: "yo", propArr: ["yo"] }
+// opts: { dot: <DotEvent>, ns: "say", prop: "yo", propArr: ["yo"] }
 ```
 
 And adding even more arguments only added more props!
@@ -68,8 +68,10 @@ And adding even more arguments only added more props!
 ```js
 dot.say("sup", "yo", "hello")
 // arg: hello
-// opts: { dot: <DotEvent>, ns: "saySomething", prop: "sup.yo", propArr: ["sup", "yo"] }
+// opts: { dot: <DotEvent>, ns: "say", prop: "sup.yo", propArr: ["sup", "yo"] }
 ```
+
+And thus his journey began...
 
 ### Existing dot composers
 
