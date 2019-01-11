@@ -28,14 +28,14 @@ describe("opt", function() {
   test("first string", function() {
     var args
 
-    dot.on("a", function(a) {
+    dot.on(function(a) {
       args = a
     })
 
     return dot("a").then(function() {
       expect(args).toEqual({
         dot: dot,
-        ns: "a",
+        opt: "a",
         prop: "",
         propArr: [],
       })

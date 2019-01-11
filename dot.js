@@ -5,7 +5,6 @@
 // Helper variables
 //
 var empty = "",
-  fnType = "function",
   period = ".",
   strType = "string"
 
@@ -86,13 +85,15 @@ function emit(k, m, o, p, r) {
   var arg = {
       dot: r.dot,
       ns: p.ns,
-      opt: o.opt,
+      opt: o,
       prop: p.str,
       propArr: p.arr,
     },
     s = r.dot.state,
     sig1 = {},
     sig2 = {}
+
+  // console.log(arg)
 
   var promise = Promise.all([
     callAny(arg, k.arr, s.beforeAny, sig1),
@@ -134,7 +135,7 @@ function off(k, m, o, p, r) {
     set = s[m].get(k.str)
 
   if (set) {
-    o.fn ? s[m].delete(k.str) : set.delete(o.fn)
+    o ? s[m].delete(k.str) : set.delete(o)
   }
 }
 
@@ -147,7 +148,7 @@ function on(k, m, o, p, r) {
   // p - props
   // r - refs
   //
-  if (!o.fn) {
+  if (!o) {
     return
   }
 
@@ -170,7 +171,7 @@ function on(k, m, o, p, r) {
       })
   }
 
-  set.add(o.fn)
+  set.add(o)
 
   return off.bind(null, k, m, o, p, r)
 }
@@ -184,6 +185,10 @@ function nsEmit() {
     a[0][0] = this.p.ns + period + a[0][0]
   } else {
     a.unshift(this.p.ns)
+  }
+
+  if (a.length === 1) {
+    a.push(undefined)
   }
 
   return setup.apply(this, a)
@@ -207,36 +212,25 @@ function reset() {
 function setup() {
   var a = arguments,
     k = { arr: [] },
-    o = {},
+    o,
     p = {}
 
   for (var i = 0; i < a.length; i++) {
-    var isFirst = i === 0,
-      isLast = i === a.length - 1,
-      opt = a[i]
-
-    var isArray = Array.isArray(opt),
-      t = typeof opt
-
-    var isFn = t === fnType,
-      isStr = t === strType
-
-    if ((isArray || isStr) && (isFirst || !isLast)) {
-      k.arr = k.arr.concat(isStr ? opt.split(period) : opt)
-    }
-
-    o.fn = isFn ? opt : o.fn
-
-    if (!isFirst || (isFirst && !isArray && !isStr)) {
-      o.opt = opt ? opt : o.opt
+    if (i === a.length - 1) {
+      o = a[i]
+    } else {
+      k.arr = k.arr.concat(
+        typeof a[i] === strType ? a[i].split(period) : a[i]
+      )
     }
   }
 
   k.str = k.arr.join(period)
-
   p.arr = k.arr.slice(1)
   p.ns = k.arr[0]
   p.str = p.arr.join(period)
+
+  // console.log(k, o, p)
 
   return this.fn(k, this.m, o, p, this.r)
 }
