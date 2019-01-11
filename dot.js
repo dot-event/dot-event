@@ -28,31 +28,33 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callAny(a, k, m, s) {
+function callAny(a, k, m, o, s) {
   // a - arg
   // k - key
   // m - map
+  // o - opts
   // s - signal
   //
   var key = []
 
   var promise = k.map(function(prop) {
     key.push(prop)
-    return callOn(a, key, m, s)
+    return callOn(a, key, m, o, s)
   })
 
   return Promise.all([
-    callOn(a, undefined, m, s),
+    callOn(a, undefined, m, o, s),
     Promise.all(promise),
   ])
 }
 
 // Call "on" listener functions
 //
-function callOn(a, k, m, s) {
+function callOn(a, k, m, o, s) {
   // a - arg
   // k - key
   // m - map
+  // o - opts
   // s - signal
   //
   var set = m.get(k ? k.join(period) : empty)
@@ -62,7 +64,7 @@ function callOn(a, k, m, s) {
 
     set.forEach(function(fn) {
       if (!s.cancel) {
-        promises.push(fn(a, s))
+        promises.push(fn(a, o, s))
       }
     })
 
@@ -76,16 +78,15 @@ function callOn(a, k, m, s) {
 
 // Call "on" and "onAny" listener functions
 //
-function emit(k, m, o, p, r) {
+function emit(a, k, m, p, r) {
+  // a - arg
   // k - key
-  // o - opts
   // p - props
   // r - refs
   //
-  var arg = {
+  var o = {
       dot: r.dot,
       ns: p.ns,
-      opt: o,
       prop: p.str,
       propArr: p.arr,
     },
@@ -93,26 +94,24 @@ function emit(k, m, o, p, r) {
     sig1 = {},
     sig2 = {}
 
-  // console.log(arg)
-
   var promise = Promise.all([
-    callAny(arg, k.arr, s.beforeAny, sig1),
-    callOn(arg, k.arr, s.beforeOn, sig2),
+    callAny(a, k.arr, s.beforeAny, o, sig1),
+    callOn(a, k.arr, s.beforeOn, o, sig2),
   ])
     .then(function() {
       return Promise.all([
-        callAny(arg, k.arr, s.any, sig1),
-        callOn(arg, k.arr, s.on, sig2),
+        callAny(a, k.arr, s.any, o, sig1),
+        callOn(a, k.arr, s.on, o, sig2),
       ])
     })
     .then(function() {
       return Promise.all([
-        callAny(arg, k.arr, s.afterAny, sig1),
-        callOn(arg, k.arr, s.afterOn, sig2),
+        callAny(a, k.arr, s.afterAny, o, sig1),
+        callOn(a, k.arr, s.afterOn, o, sig2),
       ])
     })
     .then(function() {
-      return arg
+      return a
     })
 
   var value = sig1.value || sig2.value
@@ -125,30 +124,30 @@ function emit(k, m, o, p, r) {
 
 // Turn off listener(s)
 //
-function off(k, m, o, p, r) {
+function off(a, k, m, p, r) {
+  // a - arg
   // k - key
   // m - map
-  // o - opts
   // r - refs
   //
   var s = r.dot.state,
     set = s[m].get(k.str)
 
   if (set) {
-    o ? s[m].delete(k.str) : set.delete(o)
+    a ? s[m].delete(k.str) : set.delete(a)
   }
 }
 
 // Base listener adding logic
 //
-function on(k, m, o, p, r) {
+function on(a, k, m, p, r) {
+  // a - arg
   // k - key
   // m - map
-  // o - opts
   // p - props
   // r - refs
   //
-  if (!o) {
+  if (!a) {
     return
   }
 
@@ -171,9 +170,9 @@ function on(k, m, o, p, r) {
       })
   }
 
-  set.add(o)
+  set.add(a)
 
-  return off.bind(null, k, m, o, p, r)
+  return off.bind(null, a, k, m, p, r)
 }
 
 function nsEmit() {
@@ -210,17 +209,18 @@ function reset() {
 // Parse arguments for `emit`, `off`, `on`, and `onAny`
 //
 function setup() {
-  var a = arguments,
+  var a,
+    args = arguments,
     k = { arr: [] },
-    o,
     p = {}
 
-  for (var i = 0; i < a.length; i++) {
-    if (i === a.length - 1) {
-      o = a[i]
+  for (var i = 0; i < args.length; i++) {
+    var arg = args[i]
+    if (i === args.length - 1) {
+      a = arg
     } else {
       k.arr = k.arr.concat(
-        typeof a[i] === strType ? a[i].split(period) : a[i]
+        typeof arg === strType ? arg.split(period) : arg
       )
     }
   }
@@ -230,7 +230,5 @@ function setup() {
   p.ns = k.arr[0]
   p.str = p.arr.join(period)
 
-  // console.log(k, o, p)
-
-  return this.fn(k, this.m, o, p, this.r)
+  return this.fn(a, k, this.m, p, this.r)
 }

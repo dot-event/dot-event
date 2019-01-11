@@ -44,17 +44,18 @@ describe("dot", function() {
   })
 
   test("on args", function() {
-    var args
+    var arg, opts
 
-    dot.on("a.b", "c", function(a) {
-      args = a
+    dot.on("a.b", "c", function(a, o) {
+      arg = a
+      opts = o
     })
 
     return dot("a.b.c", { test: true }).then(function() {
-      expect(args).toEqual({
+      expect(arg).toEqual({ test: true })
+      expect(opts).toEqual({
         dot: dot,
         ns: "a",
-        opt: { test: true },
         prop: "b.c",
         propArr: ["b", "c"],
       })
@@ -84,7 +85,7 @@ describe("dot", function() {
   test("on cancel", function() {
     var called
 
-    dot.beforeOn("a.b", "c", function(opt, sig) {
+    dot.beforeOn("a.b", "c", function(a, o, sig) {
       sig.cancel = true
     })
 
@@ -98,7 +99,7 @@ describe("dot", function() {
   })
 
   test("on value", function() {
-    dot.beforeOn("a.b", "c", function(opt, sig) {
+    dot.beforeOn("a.b", "c", function(a, o, sig) {
       sig.value = true
     })
 
