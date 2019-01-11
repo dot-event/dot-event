@@ -40,7 +40,7 @@ require("./yo")(dot)
 dot.sayHi()
 ```
 
-Far away, a library author noticed the first argument to the function behaves as expected...
+Far away, a library author noticed the first argument behaves as expected...
 
 ```js
 dot.any("say", function(arg) {
