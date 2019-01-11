@@ -8,7 +8,7 @@ Javascript event emitter, foundation of everything.
 
 - Amazing logging
 - Async-first
-- Extend anything (before, during, after)
+- Extend any event (before, during, after)
 - Dependency decoupling
 - Micro (<1kb compressed & gzipped)
 
