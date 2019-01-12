@@ -95,7 +95,7 @@ dot.any("someEvent", function(arg, opts) {
 - The first argument (arg) can be of any type the API requires (including `undefined`).
 - The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array`.
 
-### Existing dot composers
+## Existing dot composers
 
 | Library | Description                   | URL                                 |
 | ------- | ----------------------------- | ----------------------------------- |
