@@ -86,7 +86,7 @@ function emit(a, k, m, p, r) {
   //
   var o = {
       dot: r.dot,
-      ns: p.ns,
+      event: p.event,
       prop: p.str,
       propArr: p.arr,
     },
@@ -160,9 +160,9 @@ function on(a, k, m, p, r) {
     set = new Set()
     s[m].set(k.str, set)
 
-    r.dot[p.ns] =
-      r.dot[p.ns] ||
-      nsEmit.bind({
+    r.dot[p.event] =
+      r.dot[p.event] ||
+      eventEmit.bind({
         fn: emit,
         p: p,
         r: r,
@@ -175,15 +175,15 @@ function on(a, k, m, p, r) {
   return off.bind(null, a, k, m, p, r)
 }
 
-function nsEmit() {
+function eventEmit() {
   var a = Array.prototype.slice.call(arguments)
 
   if (typeof a[0] === "string") {
-    a[0] = this.p.ns + period + a[0]
+    a[0] = this.p.event + period + a[0]
   } else if (Array.isArray(a[0])) {
-    a[0][0] = this.p.ns + period + a[0][0]
+    a[0][0] = this.p.event + period + a[0][0]
   } else {
-    a.unshift(this.p.ns)
+    a.unshift(this.p.event)
   }
 
   if (a.length === 1) {
@@ -227,7 +227,7 @@ function setup() {
 
   k.str = k.arr.join(period)
   p.arr = k.arr.slice(1)
-  p.ns = k.arr[0]
+  p.event = k.arr[0]
   p.str = p.arr.join(period)
 
   return this.fn(a, k, this.m, p, this.r)

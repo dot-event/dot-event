@@ -19,7 +19,7 @@ describe("opt", function() {
       expect(arg).toBe("hi")
       expect(opts).toEqual({
         dot: dot,
-        ns: "a",
+        event: "a",
         prop: "b.c",
         propArr: ["b", "c"],
       })

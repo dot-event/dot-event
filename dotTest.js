@@ -55,7 +55,7 @@ describe("dot", function() {
       expect(arg).toEqual({ test: true })
       expect(opts).toEqual({
         dot: dot,
-        ns: "a",
+        event: "a",
         prop: "b.c",
         propArr: ["b", "c"],
       })
