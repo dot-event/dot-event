@@ -83,7 +83,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 ```
 
 - The last argument (`arg`) may be of any type the event requires.
-- If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
+- All arguments before the last are props. If a prop is not a `String` or `Array.<String>`, it is not included.
 
 ## Author guide
 
