@@ -75,7 +75,7 @@ dot.say("sup", "yo", "hello")
 
 And thus their journey began...
 
-## End user guide
+## Emitting events
 
 ```js
 dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
@@ -85,7 +85,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 - The last argument (`arg`) may be of any type the event requires.
 - All arguments before the last are props. If a prop is not a `String` or `Array.<String>`, it is not included.
 
-## Author guide
+## Listening to events
 
 ```js
 dot.any("someEvent", function(arg, opts) {
