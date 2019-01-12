@@ -74,6 +74,18 @@ dot.say("sup", "yo", "hello")
 
 And thus their journey began...
 
+## Arguments
+
+**End users** know two things about `dot` function arguments:
+
+- The last argument is information for the function. Typically the last argument is an object, but they can be of any type the API requires (including `undefined`).
+- Any argument before the last is considered a "prop". If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
+
+**Library authors** know three things about `dot` listener arguments:
+
+- The first argument is information for the function. Typically the first argument is an object, but they can be of any type the API requires (including `undefined`).
+- The second argument is an object containing the `dot` instance, an `ns` string describing the `dot` function name, a `prop` string, and a `propArr` array containing each prop component.
+
 ### Existing dot composers
 
 | Library | Description                   | URL                                 |
