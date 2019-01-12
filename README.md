@@ -81,7 +81,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 //  ^—— event ^—— prop ^—— prop         ^—— arg
 ```
 
-- The last argument (`arg`) can be of any type the API requires (including `undefined`).
+- The last argument (arg) can be of any type the API requires (including `undefined`).
 - If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
 
 ## Library author's guide
@@ -92,8 +92,8 @@ dot.any("someEvent", function(arg, opts) {
 })
 ```
 
-- The first argument (`arg`) can be of any type the API requires (including `undefined`).
-- The second argument is an object containing: the `dot` instance, an `event` name string, a `prop` string, and a `propArr` array.
+- The first argument (arg) can be of any type the API requires (including `undefined`).
+- The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array`.
 
 ### Existing dot composers
 
