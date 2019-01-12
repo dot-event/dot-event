@@ -8,7 +8,7 @@ Javascript event emitter, foundation of everything.
 
 Dot-event produces code that is:
 
-- Async
+- Asynchronous
 - Debuggable
 - Decoupled
 - Extensible
@@ -93,7 +93,7 @@ dot.any("someEvent", function(arg, opts) {
 })
 ```
 
-- The first argument (`arg`) can be of any type the event requires.
+- The first listener argument (`arg`) can be of any type the event requires.
 - The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array`.
 
 ## Existing dot composers
