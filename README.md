@@ -74,9 +74,7 @@ dot.say("sup", "yo", "hello")
 
 And thus their journey began...
 
-## Arguments
-
-**End user**'s guide to `dot` function arguments:
+## End user's guide
 
 ```js
 dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
@@ -86,7 +84,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 - The last argument (`arg`) can be of any type the API requires (including `undefined`).
 - If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
 
-**Library author**'s guide to `dot` listener arguments:
+## Library author's guide
 
 ```js
 dot.any("someEvent", function(arg, opts) {
