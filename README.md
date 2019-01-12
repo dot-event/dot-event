@@ -76,15 +76,26 @@ And thus their journey began...
 
 ## Arguments
 
-**End users** know two things about `dot` function arguments:
+**End user**'s guide to `dot` function arguments:
 
-- The last argument is information for the function. Typically the last argument is an object, but they can be of any type the API requires (including `undefined`).
-- Any argument before the last is considered a "prop". If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
+```js
+dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
+//  ^—— event ^—— prop ^—— prop         ^—— arg
+```
 
-**Library authors** know three things about `dot` listener arguments:
+- The last argument (`arg`) can be of any type the API requires (including `undefined`).
+- If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
 
-- The first argument is information for the function. Typically the first argument is an object, but they can be of any type the API requires (including `undefined`).
-- The second argument is an object containing the `dot` instance, an `ns` string describing the `dot` function name, a `prop` string, and a `propArr` array containing each prop component.
+**Library author**'s guide to `dot` listener arguments:
+
+```js
+dot.any("someEvent", function(arg, opts) {
+  //      ^—— event             ^——  ^—— { dot, event, prop, propArr }
+})
+```
+
+- The first argument (`arg`) can be of any type the API requires (including `undefined`).
+- The second argument is an object containing: the `dot` instance, an `event` name string, a `prop` string, and a `propArr` array.
 
 ### Existing dot composers
 
