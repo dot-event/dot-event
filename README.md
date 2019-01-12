@@ -82,8 +82,8 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 //  ^—— event ^—— prop ^—— prop         ^—— arg
 ```
 
-- The last argument (`arg`) may be any value the event requires.
-- All arguments up to the last form a dot-delimited prop identifier. Only `String` and `Array.<String>` arguments form the identifier.
+- The last argument (`arg`) may be any value.
+- All arguments up to the last form a dot-delimited prop identifier. Only `String` and `Array.<String>` arguments form the prop identifier.
 
 ## Listening to events
 
@@ -93,7 +93,7 @@ dot.any("someEvent", function(arg, opts) {
 })
 ```
 
-- The first listener argument (`arg`) may be any value the event requires.
+- The first listener argument (`arg`) may be any value.
 - The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array.<String>`.
 
 ## Existing dot composers
