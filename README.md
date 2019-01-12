@@ -12,6 +12,7 @@ Dot-event produces code that is:
 - Debuggable
 - Decoupled
 - Extensible
+- Testable
 
 ## Story
 
