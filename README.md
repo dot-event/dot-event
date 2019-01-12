@@ -94,7 +94,7 @@ dot.any("someEvent", function(arg, opts) {
 ```
 
 - The first listener argument (`arg`) may be of any type the event requires.
-- The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array`.
+- The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array.<String>`.
 
 ## Existing dot composers
 
