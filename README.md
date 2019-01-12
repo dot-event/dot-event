@@ -6,11 +6,12 @@ Javascript event emitter, foundation of everything.
 
 ## Buzzwords
 
-- Amazing logging
-- Async-first
-- Extend any event (before, during, after)
-- Micro (<1kb compressed & gzipped)
-- Promotes dependency decoupling
+Dot-event produces code that is:
+
+- Async
+- Debuggable
+- Decoupled
+- Extensible
 
 ## Story
 
