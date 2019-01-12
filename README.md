@@ -88,7 +88,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 
 ```js
 dot.any("someEvent", function(arg, opts) {
-  //      ^—— event             ^——  ^—— { dot, event, prop, propArr }
+  //    ^—— event             ^——  ^—— { dot, event, prop, propArr }
 })
 ```
 
