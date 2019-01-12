@@ -82,7 +82,7 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 //  ^—— event ^—— prop ^—— prop         ^—— arg
 ```
 
-- The last argument (`arg`) can be of any type the event requires.
+- The last argument (`arg`) may be of any type the event requires.
 - If a prop is not a `String` or `Array.<String>`, it is not included in the final prop string.
 
 ## Author guide
@@ -93,7 +93,7 @@ dot.any("someEvent", function(arg, opts) {
 })
 ```
 
-- The first listener argument (`arg`) can be of any type the event requires.
+- The first listener argument (`arg`) may be of any type the event requires.
 - The second argument is an object containing: the dot-event instance, an event name `String`, a prop `String`, and a prop `Array`.
 
 ## Existing dot composers
