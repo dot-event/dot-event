@@ -68,16 +68,7 @@ function callOn(a, k, m, p, r, s) {
 
     set.forEach(function(fn) {
       if (!s.cancel) {
-        var o = fn(p.arr, a, r.dot, p.event, s)
-
-        if (o) {
-          s.cancel = o.cancel || s.cancel
-          s.value = o.value || s.value
-
-          if (o.then) {
-            promises.push(o)
-          }
-        }
+        promises.push(fn(p.arr, a, r.dot, p.event, s))
       }
     })
 
@@ -164,7 +155,7 @@ function on(a, k, m, p, r) {
     if (p.event) {
       r.dot[p.event] =
         r.dot[p.event] ||
-        eventEmit.bind({
+        setup.bind({
           fn: emit,
           p: p,
           r: r,
@@ -176,24 +167,6 @@ function on(a, k, m, p, r) {
   set.add(a)
 
   return off.bind(null, a, k, m, p, r)
-}
-
-function eventEmit() {
-  var a = Array.prototype.slice.call(arguments)
-
-  if (typeof a[0] === "string") {
-    a[0] = this.p.event + period + a[0]
-  } else if (Array.isArray(a[0])) {
-    a[0] = [this.p.event].concat(a[0])
-  } else {
-    a.unshift(this.p.event)
-  }
-
-  if (a.length === 1) {
-    a.push(undefined)
-  }
-
-  return setup.apply(this, a)
 }
 
 // Reset state
@@ -214,7 +187,7 @@ function reset() {
 function setup() {
   var a,
     args = arguments,
-    k = { arr: [] },
+    k = { arr: this.p ? [this.p.event] : [] },
     p = {}
 
   for (var i = 0; i < args.length; i++) {

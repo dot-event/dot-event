@@ -97,33 +97,9 @@ describe("dot", function() {
     })
   })
 
-  test("on cancel (return value)", function() {
-    var called
-
-    dot.beforeOn("a.b", "c", function() {
-      return { cancel: true }
-    })
-
-    dot.on("a", "b", "c", function() {
-      called = true
-    })
-
-    return dot("a.b.c", {}).then(function() {
-      expect(called).not.toBe(true)
-    })
-  })
-
   test("on value", function() {
     dot.beforeOn("a.b", "c", function(p, a, d, e, sig) {
       sig.value = true
-    })
-
-    expect(dot("a.b.c", {})).toBe(true)
-  })
-
-  test("on value (return value)", function() {
-    dot.beforeOn("a.b", "c", function() {
-      return { value: true }
     })
 
     expect(dot("a.b.c", {})).toBe(true)
