@@ -184,7 +184,7 @@ function eventEmit() {
   if (typeof a[0] === "string") {
     a[0] = this.p.event + period + a[0]
   } else if (Array.isArray(a[0])) {
-    a[0][0] = this.p.event + period + a[0][0]
+    a[0] = [this.p.event].concat(a[0])
   } else {
     a.unshift(this.p.event)
   }
