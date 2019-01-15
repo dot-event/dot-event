@@ -14,66 +14,20 @@ Dot-event produces code that is:
 - Extensible
 - Testable
 
-## Story
-
-One day, a `dot` instance was born:
+## Listening to events
 
 ```js
-dot = require("dot-event")()
-```
+var dot = require("dot-event")()
 
-Each time `dot` went into a composer, the composer added some functionality to it:
-
-```js
-module.exports = function(dot) {
-  dot.any("sayHi", function() {
-    console.log("hi!")
-  })
-}
-```
-
-The user had an easy time composing their `dot`:
-
-```js
-require("./hi")(dot)
-require("./whatsUp")(dot)
-require("./yo")(dot)
-
-dot.sayHi()
-```
-
-Far away, a library author noticed the first argument behaves as expected...
-
-```js
-dot.any("say", function(arg) {
-  console.log("arg:", arg)
+dot.any("someEvent", function(prop, arg, dot, event) {
+  //    ^—— event             ^—— Array.<String>
 })
-
-dot.say("yo") // arg: yo
 ```
 
-But the second argument does not!
-
-```js
-dot.any("say", function(arg, opts) {
-  console.log("arg:", arg)
-  console.log("opts:", opts)
-})
-
-dot.say("yo", "hello")
-// arg: hello
-// opts: { dot: <DotEvent>, ns: "say", prop: "yo", propArr: ["yo"] }
-```
-
-And adding even more arguments only added more props!
-
-```js
-dot.say("sup", "yo", "hello")
-// arg: hello
-// opts: { dot: <DotEvent>, ns: "say", prop: "sup.yo", propArr: ["sup", "yo"] }
-```
-
-And thus their journey began...
+- The first listener argument (`prop`) is an `Array.<String>` of prop keys.
+- The second listener argument (`arg`) is any value.
+- The third listener argument (`dot`) is the dot-event instance.
+- The fourth listener argument (`event`) is the event `String`.
 
 ## Emitting events
 
@@ -84,17 +38,6 @@ dot.someEvent("a.b.c", ["d", "e", "f"], { opt: true })
 
 - The last argument (`arg`) may be any value.
 - All arguments up to the last form a dot-delimited prop identifier. Only `String` and `Array.<String>` arguments form the prop identifier.
-
-## Listening to events
-
-```js
-dot.any("someEvent", function(arg, opts) {
-  //    ^—— event             ^——  ^—— { dot, event, prop, propArr }
-})
-```
-
-- The first listener argument (`arg`) may be any value.
-- The second listener argument (`opts`) is an `Object`. It contains the dot-event instance, an event name `String`, a prop `String`, and a prop `Array.<String>`.
 
 ## Existing dot composers
 

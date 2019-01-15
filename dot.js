@@ -28,43 +28,56 @@ module.exports = function dot() {
 
 // Call "onAny" listener functions
 //
-function callAny(a, k, m, o, s) {
+function callAny(a, k, m, p, r, s) {
   // a - arg
   // k - key
   // m - map
-  // o - opts
+  // p - prop
+  // r - refs
   // s - signal
   //
-  var key = []
+  var key
 
-  var promise = k.map(function(prop) {
-    key.push(prop)
-    return callOn(a, key, m, o, s)
+  var promise = k.arr.map(function(prop) {
+    key = key ? key + period + prop : prop
+    return callOn(a, key, m, p, r, s)
   })
 
   return Promise.all([
-    callOn(a, undefined, m, o, s),
+    callOn(a, undefined, m, p, r, s),
     Promise.all(promise),
   ])
 }
 
 // Call "on" listener functions
 //
-function callOn(a, k, m, o, s) {
+function callOn(a, k, m, p, r, s) {
   // a - arg
   // k - key
   // m - map
-  // o - opts
+  // p - prop
+  // r - refs
   // s - signal
   //
-  var set = m.get(k ? k.join(period) : empty)
+  var set = m.get(
+    k ? (k.str !== undefined ? k.str : k) : empty
+  )
 
   if (set) {
     var promises = []
 
     set.forEach(function(fn) {
       if (!s.cancel) {
-        promises.push(fn(a, o, s))
+        var o = fn(p.arr, a, r.dot, p.event, s)
+
+        if (o) {
+          s.cancel = o.cancel || s.cancel
+          s.value = o.value || s.value
+
+          if (o.then) {
+            promises.push(o)
+          }
+        }
       }
     })
 
@@ -84,42 +97,30 @@ function emit(a, k, m, p, r) {
   // p - props
   // r - refs
   //
-  var o = {
-      dot: r.dot,
-      event: p.event,
-      prop: p.str,
-      propArr: p.arr,
-    },
-    s = r.dot.state,
-    sig1 = {},
-    sig2 = {}
+  var s = r.dot.state,
+    sig = {}
 
   var promise = Promise.all([
-    callAny(a, k.arr, s.beforeAny, o, sig1),
-    callOn(a, k.arr, s.beforeOn, o, sig2),
+    callAny(a, k, s.beforeAny, p, r, sig),
+    callOn(a, k, s.beforeOn, p, r, sig),
   ])
     .then(function() {
       return Promise.all([
-        callAny(a, k.arr, s.any, o, sig1),
-        callOn(a, k.arr, s.on, o, sig2),
+        callAny(a, k, s.any, p, r, sig),
+        callOn(a, k, s.on, p, r, sig),
       ])
     })
     .then(function() {
       return Promise.all([
-        callAny(a, k.arr, s.afterAny, o, sig1),
-        callOn(a, k.arr, s.afterOn, o, sig2),
+        callAny(a, k, s.afterAny, p, r, sig),
+        callOn(a, k, s.afterOn, p, r, sig),
       ])
     })
     .then(function() {
       return a
     })
 
-  var value = sig1.value || sig2.value
-
-  var noValue =
-    sig1.value === undefined && sig2.value === undefined
-
-  return noValue ? promise : value
+  return sig.value === undefined ? promise : sig.value
 }
 
 // Turn off listener(s)
@@ -160,14 +161,16 @@ function on(a, k, m, p, r) {
     set = new Set()
     s[m].set(k.str, set)
 
-    r.dot[p.event] =
-      r.dot[p.event] ||
-      eventEmit.bind({
-        fn: emit,
-        p: p,
-        r: r,
-        s: s,
-      })
+    if (p.event) {
+      r.dot[p.event] =
+        r.dot[p.event] ||
+        eventEmit.bind({
+          fn: emit,
+          p: p,
+          r: r,
+          s: s,
+        })
+    }
   }
 
   set.add(a)
@@ -228,7 +231,6 @@ function setup() {
   k.str = k.arr.join(period)
   p.arr = k.arr.slice(1)
   p.event = k.arr[0]
-  p.str = p.arr.join(period)
 
   return this.fn(a, k, this.m, p, this.r)
 }

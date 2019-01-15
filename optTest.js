@@ -8,57 +8,38 @@ beforeEach(function() {
 
 describe("opt", function() {
   test("last string", function() {
-    var arg, opts
+    var args
 
-    dot.on("a.b", "c", function(a, o) {
-      arg = a
-      opts = o
+    dot.on("a.b", "c", function() {
+      args = Array.prototype.slice.call(arguments)
     })
 
     return dot("a.b.c", "hi").then(function() {
-      expect(arg).toBe("hi")
-      expect(opts).toEqual({
-        dot: dot,
-        event: "a",
-        prop: "b.c",
-        propArr: ["b", "c"],
-      })
+      expect(args).toEqual([["b", "c"], "hi", dot, "a", {}])
     })
   })
 
   test("first string", function() {
-    var arg, opts
+    var args
 
-    dot.on(function(a, o) {
-      arg = a
-      opts = o
+    dot.on(function() {
+      args = Array.prototype.slice.call(arguments)
     })
 
     return dot("a").then(function() {
-      expect(arg).toBe("a")
-      expect(opts).toEqual({
-        dot: dot,
-        prop: "",
-        propArr: [],
-      })
+      expect(args).toEqual([[], "a", dot, undefined, {}])
     })
   })
 
   test("first non-string", function() {
-    var arg, opts
+    var args
 
-    dot.on(function(a, o) {
-      arg = a
-      opts = o
+    dot.on(function() {
+      args = Array.prototype.slice.call(arguments)
     })
 
     return dot(true).then(function() {
-      expect(arg).toBe(true)
-      expect(opts).toEqual({
-        dot: dot,
-        prop: "",
-        propArr: [],
-      })
+      expect(args).toEqual([[], true, dot, undefined, {}])
     })
   })
 })

@@ -44,21 +44,20 @@ describe("dot", function() {
   })
 
   test("on args", function() {
-    var arg, opts
+    var args
 
-    dot.on("a.b", "c", function(a, o) {
-      arg = a
-      opts = o
+    dot.on("a.b", "c", function() {
+      args = Array.prototype.slice.call(arguments)
     })
 
     return dot("a.b.c", { test: true }).then(function() {
-      expect(arg).toEqual({ test: true })
-      expect(opts).toEqual({
-        dot: dot,
-        event: "a",
-        prop: "b.c",
-        propArr: ["b", "c"],
-      })
+      expect(args).toEqual([
+        ["b", "c"],
+        { test: true },
+        dot,
+        "a",
+        {},
+      ])
     })
   })
 
@@ -85,7 +84,7 @@ describe("dot", function() {
   test("on cancel", function() {
     var called
 
-    dot.beforeOn("a.b", "c", function(a, o, sig) {
+    dot.beforeOn("a.b", "c", function(p, a, d, e, sig) {
       sig.cancel = true
     })
 
@@ -98,9 +97,33 @@ describe("dot", function() {
     })
   })
 
+  test("on cancel (return value)", function() {
+    var called
+
+    dot.beforeOn("a.b", "c", function() {
+      return { cancel: true }
+    })
+
+    dot.on("a", "b", "c", function() {
+      called = true
+    })
+
+    return dot("a.b.c", {}).then(function() {
+      expect(called).not.toBe(true)
+    })
+  })
+
   test("on value", function() {
-    dot.beforeOn("a.b", "c", function(a, o, sig) {
+    dot.beforeOn("a.b", "c", function(p, a, d, e, sig) {
       sig.value = true
+    })
+
+    expect(dot("a.b.c", {})).toBe(true)
+  })
+
+  test("on value (return value)", function() {
+    dot.beforeOn("a.b", "c", function() {
+      return { value: true }
     })
 
     expect(dot("a.b.c", {})).toBe(true)
