@@ -72,7 +72,7 @@ function callOn(a, k, m, p, r, s) {
         if (out && out.then) {
           promises.push(out)
         } else if (out !== undefined) {
-          s.value = out
+          s.value = s.value || out
         }
       }
     })
