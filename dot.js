@@ -200,9 +200,14 @@ function setup() {
     if (i === args.length - 1) {
       a = arg
     } else {
-      k.arr = k.arr.concat(
-        typeof arg === strType ? arg.split(period) : arg
-      )
+      var isArr = Array.isArray(arg),
+        isStr = typeof arg === strType
+
+      if (isArr || isStr) {
+        k.arr = k.arr.concat(
+          isStr ? arg.split(period) : arg
+        )
+      }
     }
   }
 
