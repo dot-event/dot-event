@@ -68,7 +68,12 @@ function callOn(a, k, m, p, r, s) {
 
     set.forEach(function(fn) {
       if (!s.cancel) {
-        promises.push(fn(p.arr, a, r.dot, p.event, s))
+        var out = fn(p.arr, a, r.dot, p.event, s)
+        if (out && out.then) {
+          promises.push(out)
+        } else if (out !== undefined) {
+          s.value = out
+        }
       }
     })
 

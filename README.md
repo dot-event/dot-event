@@ -20,7 +20,7 @@ Dot-event produces code that is:
 var dot = require("dot-event")()
 
 dot.any("someEvent", function(prop, arg, dot, event) {
-  //    ^—— event             ^—— Array.<String>
+  //    ^—— event    ^—— listener
 })
 ```
 

@@ -105,6 +105,14 @@ describe("dot", function() {
     expect(dot("a.b.c", {})).toBe(true)
   })
 
+  test("on value (from return)", function() {
+    dot.beforeOn("a.b", "c", function() {
+      return true
+    })
+
+    expect(dot("a.b.c", {})).toBe(true)
+  })
+
   test("onAny empty", function() {
     var called
 
