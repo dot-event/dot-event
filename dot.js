@@ -113,7 +113,7 @@ function emit(a, k, m, p, r) {
       ])
     })
     .then(function() {
-      return a
+      return sig.value === undefined ? a : sig.value
     })
 
   return sig.value === undefined ? promise : sig.value

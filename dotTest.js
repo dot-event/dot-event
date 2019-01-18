@@ -1,3 +1,4 @@
+/*global Promise*/
 /* eslint-env jest */
 
 var dot = require("./dot")()
@@ -111,6 +112,20 @@ describe("dot", function() {
     })
 
     expect(dot("a.b.c", {})).toBe(true)
+  })
+
+  test("on value (from promise)", function(done) {
+    dot.on("a.b", "c", function(prop, arg, dot, e, sig) {
+      return new Promise(function(resolve) {
+        sig.value = "hi"
+        resolve()
+      })
+    })
+
+    dot("a.b.c", {}).then(function(arg) {
+      expect(arg).toBe("hi")
+      done()
+    })
   })
 
   test("onAny empty", function() {
