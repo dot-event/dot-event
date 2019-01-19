@@ -113,8 +113,15 @@ function emit(a, k, m, p, r) {
       ])
     })
     .then(function() {
+      s.events.delete(promise)
       return sig.value === undefined ? a : sig.value
     })
+    .catch(function(err) {
+      s.events.delete(promise)
+      throw err
+    })
+
+  s.events.add(promise)
 
   return sig.value === undefined ? promise : sig.value
 }
@@ -183,6 +190,7 @@ function reset() {
     any: new Map(),
     beforeAny: new Map(),
     beforeOn: new Map(),
+    events: new Set(),
     on: new Map(),
   }
 }
