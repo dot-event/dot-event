@@ -1,6 +1,6 @@
 {
   "name": "dot-event",
-  "version": "3.0.22",
+  "version": "3.0.23",
   "description": "Powerful event emitter",
   "keywords": [
     "event",
