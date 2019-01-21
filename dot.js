@@ -127,20 +127,53 @@ function emit(a, k, m, p, r) {
   return sig.value === undefined ? promise : sig.value
 }
 
-// Compose from require or dynamic import.
+// Runs functions and adds promises to events.
 //
-function add(composer) {
-  var dot = this.r.dot
+function add() {
+  var a = arguments,
+    dot = this.r.dot,
+    promise,
+    s = dot.state
 
-  composer = composer.default || composer
-
-  if (composer.then) {
-    return composer.then(function(_) {
-      return (_.default.default || _.default)(dot)
-    })
-  } else if (typeof composer === "function") {
-    return composer(dot)
+  for (var arg = 0; arg < a.length; arg++) {
+    promise = addComposer(a[arg], dot, promise)
   }
+
+  if (promise) {
+    s.events.add(promise)
+
+    promise.then(function() {
+      s.events.delete(promise)
+    })
+  }
+
+  return promise
+}
+
+function addComposer(c, dot, p) {
+  c = c.default || c
+
+  if (c.then) {
+    p = (p || Promise.resolve())
+      .then(function() {
+        return c
+      })
+      .then(function(lib) {
+        return lib && lib.default
+          ? (lib.default.default || lib.default)(dot)
+          : null
+      })
+  } else if (typeof c === "function") {
+    if (p) {
+      p = p.then(function() {
+        return c(dot)
+      })
+    } else {
+      c(dot)
+    }
+  }
+
+  return p
 }
 
 // Turn off listener(s)
