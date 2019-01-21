@@ -15,6 +15,7 @@ module.exports = function dot() {
     r = {}
 
   dot = r.dot = setup.bind({ fn: emit, r: r })
+  dot.add = add.bind({ r: r })
   dot.off = setup.bind({ fn: off, r: r })
   dot.reset = reset.bind({ r: r })
   dot.reset()
@@ -124,6 +125,22 @@ function emit(a, k, m, p, r) {
   s.events.add(promise)
 
   return sig.value === undefined ? promise : sig.value
+}
+
+// Compose from require or dynamic import.
+//
+function add(composer) {
+  var dot = this.r.dot
+
+  composer = composer.default || composer
+
+  if (composer.then) {
+    return composer.then(function(_) {
+      return (_.default.default || _.default)(dot)
+    })
+  } else if (typeof composer === "function") {
+    return composer(dot)
+  }
 }
 
 // Turn off listener(s)
