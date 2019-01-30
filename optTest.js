@@ -10,11 +10,11 @@ describe("opt", function() {
   test("last string", function() {
     var args
 
-    dot.on("a.b", "c", function() {
+    dot.on("a", "b", "c", function() {
       args = Array.prototype.slice.call(arguments)
     })
 
-    return dot("a.b", "c").then(function() {
+    return dot("a", "b", "c").then(function() {
       expect(args).toEqual([
         ["b", "c"],
         undefined,

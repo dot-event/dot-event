@@ -232,7 +232,7 @@ function setup() {
     var isStr = typeof arg === strType
 
     if (isStr || Array.isArray(arg)) {
-      k.arr = k.arr.concat(isStr ? arg.split(period) : arg)
+      k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
       a = arg
     }
