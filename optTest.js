@@ -14,20 +14,26 @@ describe("opt", function() {
       args = Array.prototype.slice.call(arguments)
     })
 
-    return dot("a.b.c", "hi").then(function() {
-      expect(args).toEqual([["b", "c"], "hi", dot, "a", {}])
+    return dot("a.b", "c").then(function() {
+      expect(args).toEqual([
+        ["b", "c"],
+        undefined,
+        dot,
+        "a",
+        {},
+      ])
     })
   })
 
   test("first string", function() {
     var args
 
-    dot.on(function() {
+    dot.on("a", function() {
       args = Array.prototype.slice.call(arguments)
     })
 
     return dot("a").then(function() {
-      expect(args).toEqual([[], "a", dot, undefined, {}])
+      expect(args).toEqual([[], undefined, dot, "a", {}])
     })
   })
 

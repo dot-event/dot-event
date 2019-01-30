@@ -27,7 +27,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).toBe(true)
     })
   })
@@ -39,7 +39,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).toBe(true)
     })
   })
@@ -77,7 +77,7 @@ describe("dot", function() {
       order.push(1)
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(order).toEqual([1, 2, 3])
     })
   })
@@ -93,7 +93,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).not.toBe(true)
     })
   })
@@ -103,7 +103,7 @@ describe("dot", function() {
       sig.value = true
     })
 
-    expect(dot("a.b.c", {})).toBe(true)
+    expect(dot("a.b.c")).toBe(true)
   })
 
   test("on value (from return)", function() {
@@ -111,7 +111,7 @@ describe("dot", function() {
       return true
     })
 
-    expect(dot("a.b.c", {})).toBe(true)
+    expect(dot("a.b.c")).toBe(true)
   })
 
   test("on value (from promise)", function(done) {
@@ -122,7 +122,7 @@ describe("dot", function() {
       })
     })
 
-    dot("a.b.c", {}).then(function(arg) {
+    dot("a.b.c").then(function(arg) {
       expect(arg).toBe("hi")
       done()
     })
@@ -135,7 +135,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).toBe(true)
     })
   })
@@ -147,7 +147,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).toBe(true)
     })
   })
@@ -167,7 +167,7 @@ describe("dot", function() {
       order.push(1)
     })
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(order).toEqual([1, 2, 3])
     })
   })
@@ -181,7 +181,7 @@ describe("dot", function() {
 
     off()
 
-    return dot("a.b.c", {}).then(function() {
+    return dot("a.b.c").then(function() {
       expect(called).not.toBe(true)
     })
   })
@@ -193,7 +193,7 @@ describe("dot", function() {
       called = true
     })
 
-    return dot.a("b.c", {}).then(function() {
+    return dot.a("b.c").then(function() {
       expect(called).toBe(true)
     })
   })

@@ -127,19 +127,19 @@ function emit(a, k, m, p, r) {
   return sig.value === undefined ? promise : sig.value
 }
 
-// Runs functions and adds promises to events.
+// Add promise (optionally from dynamic import) to events.
 //
-function add() {
-  var a = arguments,
-    dot = this.r.dot,
-    promise,
+function add(promise) {
+  var dot = this.r.dot,
     s = dot.state
 
-  for (var arg = 0; arg < a.length; arg++) {
-    promise = addComposer(a[arg], dot, promise)
-  }
+  if (promise.then) {
+    promise = promise.then(function(lib) {
+      return lib && lib.default
+        ? (lib.default.default || lib.default)(this)
+        : lib
+    })
 
-  if (promise) {
     s.events.add(promise)
 
     promise.then(function() {
@@ -148,32 +148,6 @@ function add() {
   }
 
   return promise
-}
-
-function addComposer(c, dot, p) {
-  c = c.default || c
-
-  if (c.then) {
-    p = (p || Promise.resolve())
-      .then(function() {
-        return c
-      })
-      .then(function(lib) {
-        return lib && lib.default
-          ? (lib.default.default || lib.default)(dot)
-          : null
-      })
-  } else if (typeof c === "function") {
-    if (p) {
-      p = p.then(function() {
-        return c(dot)
-      })
-    } else {
-      c(dot)
-    }
-  }
-
-  return p
 }
 
 // Turn off listener(s)
@@ -255,17 +229,12 @@ function setup() {
 
   for (var i = 0; i < args.length; i++) {
     var arg = args[i]
-    if (i === args.length - 1) {
-      a = arg
-    } else {
-      var isArr = Array.isArray(arg),
-        isStr = typeof arg === strType
+    var isStr = typeof arg === strType
 
-      if (isArr || isStr) {
-        k.arr = k.arr.concat(
-          isStr ? arg.split(period) : arg
-        )
-      }
+    if (isStr || Array.isArray(arg)) {
+      k.arr = k.arr.concat(isStr ? arg.split(period) : arg)
+    } else if (i === args.length - 1) {
+      a = arg
     }
   }
 
