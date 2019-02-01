@@ -136,7 +136,7 @@ function add(promise) {
   if (promise.then) {
     promise = promise.then(function(lib) {
       return lib && lib.default
-        ? (lib.default.default || lib.default)(this)
+        ? (lib.default.default || lib.default)(dot)
         : lib
     })
 
@@ -229,9 +229,10 @@ function setup() {
 
   for (var i = 0; i < args.length; i++) {
     var arg = args[i]
-    var isStr = typeof arg === strType
+    var isArr = Array.isArray(arg) && arg.every(isStrTest),
+      isStr = isStrTest(arg)
 
-    if (isStr || Array.isArray(arg)) {
+    if (isArr || isStr) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
       a = arg
@@ -243,4 +244,8 @@ function setup() {
   p.event = k.arr[0]
 
   return this.fn(a, k, this.m, p, this.r)
+}
+
+function isStrTest(arg) {
+  return typeof arg === strType
 }
