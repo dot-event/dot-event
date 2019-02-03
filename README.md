@@ -26,7 +26,7 @@ Dot-event uses a composer function pattern to create libraries that add new even
 
 ## State
 
-Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) on `dot.state` that leverages props and is only <0.5 kb compressed and gzipped.
+Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) on `dot.state` that leverages props and is only ~1 kb compressed and gzipped.
 
 ## Ready for SSR
 
