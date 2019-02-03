@@ -94,25 +94,6 @@ dot({ a: "b" }) // { a: "b" }
 
 **Arg tip 2:** The listener function always receives the user-provided argument as its second argument.
 
-## Composer pattern
-
-```js
-export default function(dot) {
-  if (!dot.myEvent) {
-    dot.any("myEvent", myEventListener)
-  }
-}
-
-async function myEventListener(prop, arg, dot) {
-  prop = prop.concat(["myEvent"])
-  await dot.otherEvent(prop)
-}
-```
-
-**Pattern tip 1:** A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
-
-**Pattern tip 2:** Another common pattern is for listeners to append props before passing them along to another emit.
-
 ## Any
 
 ```js
@@ -138,6 +119,25 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 - `dot` — the dot-event instance
 - `event` — the event id
 - `signal` — dot-event signal object (use `signal.cancel = true` for event cancellation)
+
+## Composer pattern
+
+```js
+export default function(dot) {
+  if (!dot.myEvent) {
+    dot.any("myEvent", myEventListener)
+  }
+}
+
+async function myEventListener(prop, arg, dot) {
+  prop = prop.concat(["myEvent"])
+  await dot.otherEvent(prop)
+}
+```
+
+**Pattern tip 1:** A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
+
+**Pattern tip 2:** Another common pattern is for listeners to append props before passing them along to another emit.
 
 ## Dot composers
 
