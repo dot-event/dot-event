@@ -26,39 +26,35 @@ module.exports = function dot() {
   return dot
 }
 
-// Call "onAny" listener functions
+// Emit "any" listener functions
 //
-function callAny(a, k, m, p, r, s) {
+function emitAny(a, k, m, p, pr, r, s) {
   // a - arg
   // k - key
   // m - map
   // p - prop
+  // pr - promises
   // r - refs
   // s - signal
   //
   var key
 
-  var promises = []
-
   k.arr.forEach(function(prop) {
     key = key ? key + period + prop : prop
-    promises = promises.concat(callOn(a, key, m, p, r, s))
+    emitOn(a, key, m, p, pr, r, s)
   })
 
-  promises = promises.concat(
-    callOn(a, undefined, m, p, r, s)
-  )
-
-  return promises
+  emitOn(a, undefined, m, p, pr, r, s)
 }
 
-// Call "on" listener functions
+// Emit "on" listener functions
 //
-function callOn(a, k, m, p, r, s) {
+function emitOn(a, k, m, p, pr, r, s) {
   // a - arg
   // k - key
   // m - map
   // p - prop
+  // pr - promises
   // r - refs
   // s - signal
   //
@@ -66,25 +62,21 @@ function callOn(a, k, m, p, r, s) {
     k ? (k.str !== undefined ? k.str : k) : empty
   )
 
-  var promises = []
-
   if (set) {
     set.forEach(function(fn) {
       if (!s.cancel) {
         var out = fn(p.arr, a, r.dot, p.event, s)
         if (out && out.then) {
-          promises.push(out)
+          pr.push(out)
         } else if (out !== undefined) {
           s.value = out || s.value
         }
       }
     })
   }
-
-  return promises
 }
 
-// Call "on" and "onAny" listener functions
+// Emit "on" and "any" listener functions
 //
 function emit(a, k, m, p, r) {
   // a - arg
@@ -92,14 +84,14 @@ function emit(a, k, m, p, r) {
   // p - props
   // r - refs
   //
-  var s = r.dot.state,
+  var pr = [],
+    s = r.dot.state,
     sig = {}
 
-  var promise = Promise.all(
-    callOn(a, k, s.on, p, r, sig).concat(
-      callAny(a, k, s.any, p, r, sig)
-    )
-  )
+  emitOn(a, k, s.on, p, pr, r, sig)
+  emitAny(a, k, s.any, p, pr, r, sig)
+
+  var promise = Promise.all(pr)
     .then(function(results) {
       s.events.delete(promise)
       return sig.value === undefined ? results : sig.value
@@ -202,7 +194,7 @@ function reset() {
   }
 }
 
-// Parse arguments for `emit`, `off`, `on`, and `onAny`
+// Parse arguments for `emit`, `off`, `on`, and `any`
 //
 function setup() {
   var a,
