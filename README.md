@@ -88,7 +88,7 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 
 - `prop` — an array of string identifiers
 - `arg` — a user-provided argument
-- `dot` - the dot-event instance
+- `dot` — the dot-event instance
 - `event` — the event id
 - `signal` — dot-event signal object (use `signal.cancel = true` for event cancellation)
 
