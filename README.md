@@ -22,7 +22,7 @@ Dot-event optionally uses an event id and prop string(s) to add unique identifyi
 
 ## Dynamic composition
 
-Dot-event uses a composer function pattern to create libraries that add new event listeners. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
+Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
 
 ## State
 
@@ -93,6 +93,25 @@ dot({ a: "b" }) // { a: "b" }
 **Arg tip 1:** The last non-prop emit argument is the user-provided argument.
 
 **Arg tip 2:** The listener function always receives the user-provided argument as its second argument.
+
+## Composer pattern
+
+```js
+export default function(dot) {
+  if (!dot.myEvent) {
+    dot.any("myEvent", myEventListener)
+  }
+}
+
+async function myEventListener(prop, arg, dot) {
+  prop = prop.concat(["myEvent"])
+  await dot("someOtherEvent", prop)
+}
+```
+
+**Pattern tip 1:** A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
+
+**Pattern tip 2:** Another common pattern is for listeners to append props before passing them along to another emit.
 
 ## Any
 
