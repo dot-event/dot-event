@@ -101,7 +101,7 @@ dot.any(() => "!")
 dot("a", "b") // "!"
 ```
 
-## Helper function
+## Any helper function
 
 ```js
 dot.any("a", props => props)
