@@ -105,7 +105,7 @@ export default function(dot) {
 
 async function myEventListener(prop, arg, dot) {
   prop = prop.concat(["myEvent"])
-  await dot("someOtherEvent", prop)
+  await dot.otherEvent(prop)
 }
 ```
 
