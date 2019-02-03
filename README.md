@@ -80,7 +80,7 @@ dot.any("a", props => props)
 dot.a("b", "c") // [ "b", "c" ]
 ```
 
-**Helper fn tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
+**Helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
 
 ## Listener arguments
 
