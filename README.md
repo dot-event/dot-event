@@ -124,9 +124,10 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 
 ```js
 export default function(dot) {
-  if (!dot.myEvent) {
-    dot.any("myEvent", myEvent)
+  if (dot.myEvent) {
+    return
   }
+  dot.any("myEvent", myEvent)
 }
 
 async function myEvent(prop, arg, dot) {
