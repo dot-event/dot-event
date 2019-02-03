@@ -18,7 +18,7 @@ Event listeners can emit any event [through the `dot` argument](#listener-argume
 
 ## Event id & props
 
-Dot-event optionally uses an event id and prop strings to add extra information to an emit. This is a powerful feature that adds unique identifying context to logging, store updates, and more.
+Dot-event optionally uses an event id and prop string(s) to add extra information to an emit. This "feature you didn't know you couldn't live without" adds unique identifying context to logging, store updates, and more.
 
 ## Dynamic composition
 
@@ -26,7 +26,7 @@ Dot-event uses a composer function pattern to create libraries that add new even
 
 ## State
 
-Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) with a light footprint (<0.5 kb compressed and gzipped) on top of this object.
+Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) on `dot.state` that leverages props and is only <0.5 kb compressed and gzipped.
 
 ## Ready for SSR
 
