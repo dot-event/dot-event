@@ -127,5 +127,5 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 | ad      | Google Publisher Tag | https://github.com/dot-event/ad     |
 | arg     | CLI and URL argument | https://github.com/dot-event/arg    |
 | fetch   | Universal HTTP fetch | https://github.com/dot-event/fetch  |
-| log     | Log functions        | https://github.com/dot-event/log2   |
+| log     | Event logger         | https://github.com/dot-event/log2   |
 | store   | Immutable store      | https://github.com/dot-event/store2 |
