@@ -122,10 +122,10 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 
 ## Dot composers
 
-| Library | Description                    | URL                                 |
-| ------- | ------------------------------ | ----------------------------------- |
-| ad      | Google Publisher Tag functions | https://github.com/dot-event/ad     |
-| arg     | CLI and URL argument handling  | https://github.com/dot-event/arg    |
-| fetch   | Universal HTTP fetch function  | https://github.com/dot-event/fetch  |
-| log     | Log functions                  | https://github.com/dot-event/log2   |
-| store   | Immutable store                | https://github.com/dot-event/store2 |
+| Library | Description          | URL                                 |
+| ------- | -------------------- | ----------------------------------- |
+| ad      | Google Publisher Tag | https://github.com/dot-event/ad     |
+| arg     | CLI and URL argument | https://github.com/dot-event/arg    |
+| fetch   | Universal HTTP fetch | https://github.com/dot-event/fetch  |
+| log     | Log functions        | https://github.com/dot-event/log2   |
+| store   | Immutable store      | https://github.com/dot-event/store2 |
