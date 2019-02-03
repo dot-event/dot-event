@@ -53,7 +53,7 @@ dot("a", "b", "c") // ["b", "c"]
 
 **Prop tip 1:** Any string or array of strings passed to `dot` after the event id are considered prop identifiers.
 
-**Prop tip 2:** The first argument to the listener function is always a prop array.
+**Prop tip 2:** The listener function always receives a prop array as its first argument.
 
 ## Emit argument
 
@@ -64,7 +64,7 @@ dot({ a: "b" }) // { a: "b" }
 
 **Arg tip 1:** The last non-prop emit argument is considered the user-provided argument.
 
-**Arg tip 2:** The second argument to the listener is always the user-provided argument.
+**Arg tip 2:** The listener function always receives the user-provided argument as its second argument.
 
 ## Any
 
