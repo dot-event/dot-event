@@ -72,7 +72,7 @@ dot("a") // "b"
 
 **Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
 
-## Event id & props
+## Props
 
 ```js
 dot.on("a", "b", "c", prop => prop)
