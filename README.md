@@ -18,21 +18,23 @@ Event listeners can emit any event [through the `dot` argument](#listener-argume
 
 ## Event id & props
 
-Dot-event optionally uses an event id and prop strings to add extra information to an emit. This is a powerful feature that adds identifying context to logging, store updates, and more.
+Dot-event optionally uses an event id and prop strings to add extra information to an emit. This is a powerful feature that adds unique identifying context to logging, store updates, and more.
+
+## Dynamic composition
+
+Dot-event uses a composer function pattern to create libraries that add new event listeners. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
+
+## State
+
+Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) with a light footprint (<0.5 kb compressed and gzipped) on top of this object.
 
 ## Ready for SSR
 
 Its simple to wait for all dot-event listeners to complete before rendering the final version of your server side page.
 
-## Dynamic composition
-
-Dot-event uses a composer function pattern to create libraries that add new events. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
-
-## Logging and an immutable store
+## Great logging
 
 Composer libraries can dynamically add a listener to all events, enabling [powerful logging features](https://github.com/dot-event/log2).
-
-Dot-event also has an [immutable store](https://github.com/dot-event/store2) with a light footprint (<0.5 kb compressed and gzipped).
 
 ## Setup
 
