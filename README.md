@@ -84,7 +84,7 @@ dot.a("b", "c") // [ "b", "c" ]
 
 ## Listener arguments
 
-No matter what is passed to the `dot` function, listeners always receive five arguments:
+No matter what is passed to the `dot` emitter, listener functions always receive five arguments:
 
 - `prop` — an array of string identifiers
 - `arg` — a user-provided argument
