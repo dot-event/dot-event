@@ -21,21 +21,21 @@ dot.on(() => {}) // listener
 dot() // emitter
 ```
 
-## On w/ return value
+## Return value
 
 ```js
 dot.on(() => "a")
 dot() // "a"
 ```
 
-## On w/ async return value
+## Async return value
 
 ```js
 dot.on(async () => "a")
 dot().then(result => /* [ "a" ] */)
 ```
 
-## On w/ event id
+## Event id
 
 ```js
 dot.on("a", () => "b")
@@ -44,7 +44,7 @@ dot("a") // "b"
 
 **Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is considered the event id.
 
-## On w/ event id & props
+## Event id & props
 
 ```js
 dot.on("a", "b", "c", prop => prop)
@@ -55,7 +55,7 @@ dot("a", "b", "c") // ["b", "c"]
 
 **Prop tip 2:** The first argument to the listener function is always a prop array.
 
-## On w/ emit argument
+## Emit argument
 
 ```js
 dot.on((prop, arg) => arg)
@@ -73,7 +73,7 @@ dot.any(() => "!!!")
 dot("a", "b", "c") // "!!!"
 ```
 
-## Any w/ helper function
+## Helper function
 
 ```js
 dot.any("a", props => props)
