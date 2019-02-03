@@ -18,7 +18,7 @@ Event listeners can emit any event [through the `dot` argument](#listener-argume
 
 ## Event id & props
 
-Dot-event optionally uses an event id and prop string(s) to add unique identifying context to an emit. This "feature you didn't know you couldn't live without" pays off with logging, store updates, and more.
+Dot-event optionally uses an event id and prop string(s) to add identifying context to an emit. This "feature you didn't know you couldn't live without" pays off with logging, store updates, and more.
 
 ## Dynamic composition
 
@@ -83,7 +83,7 @@ dot("a", "b", "c") // ["b", "c"]
 
 **Prop tip 2:** The listener function always receives a prop array as its first argument.
 
-## Emit argument
+## User-provided argument
 
 ```js
 dot.on((prop, arg) => arg)
