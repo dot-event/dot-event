@@ -10,17 +10,23 @@ Dot-event creates interfaces for listening to and emitting events.
 
 Dot-event listeners can be synchronous or asynchronous, accept arguments, and return values.
 
-Dot-event has a tiny footprint (<1 kb gzipped & compressed).
+Dot-event has a tiny footprint (<1 kb compressed and gzipped).
 
-## The effects
+## Write less code
 
 Any any event listener can emit any event through the `dot` argument. This results in less `require` calls and easy access to functionality across your application.
 
+## Ready for SSR
+
 In web applications, it is easy to wait for all dot-event listeners to complete before rendering the final version of your server side page.
+
+## Dynamic composition
 
 Dot-event uses a composer function pattern to create libraries that add new events. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
 
-Its easy to write composer libraries that add functionality to listeners. Dot-event already has libraries for [logging](https://github.com/dot-event/log2) and even an [immutable store](https://github.com/dot-event/store2).
+## Logging and an immutable store
+
+Its easy to write composer libraries that add functionality to listeners. Dot-event already has composers for [logging](https://github.com/dot-event/log2) and even an [immutable store](https://github.com/dot-event/store2).
 
 ## Setup
 
