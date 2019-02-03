@@ -6,7 +6,7 @@ Javascript event emitter, foundation of everything.
 
 ## Purpose
 
-Dot-event provides a succinct interface for calling events and persisting state.
+Dot-event provides a succinct interface for calling events and persisting state with a tiny footprint (<1kb).
 
 ## Setup
 
