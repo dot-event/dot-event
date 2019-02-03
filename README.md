@@ -70,7 +70,7 @@ dot.on("a", () => "b")
 dot("a") // "b"
 ```
 
-**Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is considered the event id.
+**Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
 
 ## Event id & props
 
@@ -79,7 +79,7 @@ dot.on("a", "b", "c", prop => prop)
 dot("a", "b", "c") // ["b", "c"]
 ```
 
-**Prop tip 1:** Any string or array of strings passed to `dot` after the event id are considered prop identifiers.
+**Prop tip 1:** Any string or array of strings passed to `dot` after the event id are prop identifiers.
 
 **Prop tip 2:** The listener function always receives a prop array as its first argument.
 
@@ -90,15 +90,15 @@ dot.on((prop, arg) => arg)
 dot({ a: "b" }) // { a: "b" }
 ```
 
-**Arg tip 1:** The last non-prop emit argument is considered the user-provided argument.
+**Arg tip 1:** The last non-prop emit argument is the user-provided argument.
 
 **Arg tip 2:** The listener function always receives the user-provided argument as its second argument.
 
 ## Any
 
 ```js
-dot.any(() => "!!!")
-dot("a", "b", "c") // "!!!"
+dot.any(() => "!")
+dot("a", "b") // "!"
 ```
 
 ## Helper function
