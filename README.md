@@ -92,7 +92,7 @@ No matter what is passed to the `dot` function, listeners always receive five ar
 - `event` — the event id
 - `signal` — dot-event signal object (use `signal.cancel = true` for event cancellation)
 
-## Existing dot composers
+## Dot composers
 
 | Library | Description                    | URL                                 |
 | ------- | ------------------------------ | ----------------------------------- |
