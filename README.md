@@ -14,11 +14,15 @@ Dot-event has a tiny footprint (<1 kb compressed and gzipped).
 
 ## Write less code
 
-Any any event listener can emit any event through the `dot` argument. This results in less `require` calls and easy access to functionality across your application.
+Event listeners can emit any event [through the `dot` argument](#listener-arguments), resulting in less `require` calls and easy access to functionality across your application.
+
+## Event id & props
+
+Dot-event optionally uses an event id and prop strings to add extra information to an emit. This is a powerful feature that adds identifying context to logging, store updates, and more.
 
 ## Ready for SSR
 
-In web applications, it is easy to wait for all dot-event listeners to complete before rendering the final version of your server side page.
+Its simple to wait for all dot-event listeners to complete before rendering the final version of your server side page.
 
 ## Dynamic composition
 
@@ -26,7 +30,9 @@ Dot-event uses a composer function pattern to create libraries that add new even
 
 ## Logging and an immutable store
 
-Its easy to write composer libraries that add functionality to listeners. Dot-event already has composers for [logging](https://github.com/dot-event/log2) and even an [immutable store](https://github.com/dot-event/store2).
+Composer libraries can dynamically add a listener to all events, enabling [powerful logging features](https://github.com/dot-event/log2).
+
+Dot-event also has an [immutable store](https://github.com/dot-event/store2) with a light footprint (<0.5 kb compressed and gzipped).
 
 ## Setup
 
