@@ -16,13 +16,12 @@ module.exports = function dot() {
 
   dot = r.dot = setup.bind({ fn: emit, r: r })
   dot.add = add.bind({ r: r })
+  dot.any = setup.bind({ fn: on, m: "any", r: r })
+  dot.on = setup.bind({ fn: on, m: "on", r: r })
   dot.off = setup.bind({ fn: off, r: r })
   dot.reset = reset.bind({ r: r })
-  dot.reset()
 
-  Object.keys(dot.state).forEach(function(m) {
-    dot[m] = setup.bind({ fn: on, m: m, r: r })
-  })
+  dot.reset()
 
   return dot
 }
@@ -39,15 +38,18 @@ function callAny(a, k, m, p, r, s) {
   //
   var key
 
-  var promise = k.arr.map(function(prop) {
+  var promises = []
+
+  k.arr.forEach(function(prop) {
     key = key ? key + period + prop : prop
-    return callOn(a, key, m, p, r, s)
+    promises = promises.concat(callOn(a, key, m, p, r, s))
   })
 
-  return Promise.all([
-    callOn(a, undefined, m, p, r, s),
-    Promise.all(promise),
-  ])
+  promises = promises.concat(
+    callOn(a, undefined, m, p, r, s)
+  )
+
+  return promises
 }
 
 // Call "on" listener functions
@@ -64,26 +66,22 @@ function callOn(a, k, m, p, r, s) {
     k ? (k.str !== undefined ? k.str : k) : empty
   )
 
-  if (set) {
-    var promises = []
+  var promises = []
 
+  if (set) {
     set.forEach(function(fn) {
       if (!s.cancel) {
         var out = fn(p.arr, a, r.dot, p.event, s)
         if (out && out.then) {
           promises.push(out)
         } else if (out !== undefined) {
-          s.value = s.value || out
+          s.value = out || s.value
         }
       }
     })
-
-    return Promise.all(promises).then(function() {
-      return a
-    })
-  } else {
-    return Promise.resolve(a)
   }
+
+  return promises
 }
 
 // Call "on" and "onAny" listener functions
@@ -97,25 +95,14 @@ function emit(a, k, m, p, r) {
   var s = r.dot.state,
     sig = {}
 
-  var promise = Promise.all([
-    callAny(a, k, s.beforeAny, p, r, sig),
-    callOn(a, k, s.beforeOn, p, r, sig),
-  ])
-    .then(function() {
-      return Promise.all([
-        callAny(a, k, s.any, p, r, sig),
-        callOn(a, k, s.on, p, r, sig),
-      ])
-    })
-    .then(function() {
-      return Promise.all([
-        callAny(a, k, s.afterAny, p, r, sig),
-        callOn(a, k, s.afterOn, p, r, sig),
-      ])
-    })
-    .then(function() {
+  var promise = Promise.all(
+    callOn(a, k, s.on, p, r, sig).concat(
+      callAny(a, k, s.any, p, r, sig)
+    )
+  )
+    .then(function(results) {
       s.events.delete(promise)
-      return sig.value === undefined ? a : sig.value
+      return sig.value === undefined ? results : sig.value
     })
     .catch(function(err) {
       s.events.delete(promise)
@@ -188,7 +175,7 @@ function on(a, k, m, p, r) {
     set = new Set()
     s[m].set(k.str, set)
 
-    if (p.event) {
+    if (m === "any" && p.event && !p.length) {
       r.dot[p.event] =
         r.dot[p.event] ||
         setup.bind({
@@ -209,11 +196,7 @@ function on(a, k, m, p, r) {
 //
 function reset() {
   this.r.dot.state = {
-    afterAny: new Map(),
-    afterOn: new Map(),
     any: new Map(),
-    beforeAny: new Map(),
-    beforeOn: new Map(),
     events: new Set(),
     on: new Map(),
   }

@@ -64,36 +64,10 @@ describe("dot", function() {
     )
   })
 
-  test("on before/after", function() {
-    var order = []
-
-    dot.afterOn("a", "b", "c", function() {
-      order.push(3)
-    })
-
-    dot.on("a", "b", "c", function() {
-      order.push(2)
-    })
-
-    dot.beforeOn(["a", "b"], "c", function() {
-      order.push(1)
-    })
-
-    return dot("a", "b", "c").then(function() {
-      expect(order).toEqual([1, 2, 3])
-    })
-  })
-
   test("on cancel", function() {
     var called
 
-    dot.beforeOn(["a", "b"], "c", function(
-      p,
-      a,
-      d,
-      e,
-      sig
-    ) {
+    dot.on(["a", "b"], "c", function(p, a, d, e, sig) {
       sig.cancel = true
     })
 
@@ -107,13 +81,7 @@ describe("dot", function() {
   })
 
   test("on value", function() {
-    dot.beforeOn(["a", "b"], "c", function(
-      p,
-      a,
-      d,
-      e,
-      sig
-    ) {
+    dot.on(["a", "b"], "c", function(p, a, d, e, sig) {
       sig.value = true
     })
 
@@ -121,7 +89,7 @@ describe("dot", function() {
   })
 
   test("on value (from return)", function() {
-    dot.beforeOn(["a", "b"], "c", function() {
+    dot.on(["a", "b"], "c", function() {
       return true
     })
 
@@ -137,8 +105,10 @@ describe("dot", function() {
       sig
     ) {
       return new Promise(function(resolve) {
-        sig.value = "hi"
-        resolve()
+        setTimeout(function() {
+          sig.value = "hi"
+          resolve()
+        }, 1)
       })
     })
 
@@ -169,26 +139,6 @@ describe("dot", function() {
 
     return dot("a", "b", "c").then(function() {
       expect(called).toBe(true)
-    })
-  })
-
-  test("onAny before/after", function() {
-    var order = []
-
-    dot.afterAny(["a", "b"], function() {
-      order.push(3)
-    })
-
-    dot.any("a", function() {
-      order.push(2)
-    })
-
-    dot.beforeAny("a", function() {
-      order.push(1)
-    })
-
-    return dot("a", "b", "c").then(function() {
-      expect(order).toEqual([1, 2, 3])
     })
   })
 
