@@ -83,16 +83,16 @@ dot("a", "b", "c") // ["b", "c"]
 
 **Prop tip 2:** The listener function always receives a prop array as its first argument.
 
-## User-provided argument
+## Emit argument
 
 ```js
 dot.on((prop, arg) => arg)
 dot({ a: "b" }) // { a: "b" }
 ```
 
-**Arg tip 1:** The last non-prop emit argument is the user-provided argument.
+**Arg tip 1:** The last non-prop emit argument is the emit argument.
 
-**Arg tip 2:** The listener function always receives the user-provided argument as its second argument.
+**Arg tip 2:** The listener function always receives the emit argument as its second argument.
 
 ## Any
 
@@ -115,7 +115,7 @@ dot.a("b", "c") // [ "b", "c" ]
 No matter what is passed to the `dot` emitter, listener functions always receive five arguments:
 
 - `prop` — an array of string identifiers
-- `arg` — a user-provided argument
+- `arg` — the emit argument
 - `dot` — the dot-event instance
 - `event` — the event id
 - `signal` — dot-event signal object (use `signal.cancel = true` for event cancellation)
