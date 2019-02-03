@@ -125,11 +125,11 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 ```js
 export default function(dot) {
   if (!dot.myEvent) {
-    dot.any("myEvent", myEventListener)
+    dot.any("myEvent", myEvent)
   }
 }
 
-async function myEventListener(prop, arg, dot) {
+async function myEvent(prop, arg, dot) {
   prop = prop.concat(["myEvent"])
   await dot.otherEvent(prop)
 }
