@@ -76,13 +76,13 @@ dot("a") // "b"
 
 No matter what is passed to the `dot` emitter, listener functions always receive five arguments:
 
-| Argument                | Description                 |
-| ----------------------- | --------------------------- |
-| [`prop`](#props)        | Array of string identifiers |
-| [`arg`](#emit-argument) | Emit argument               |
-| `dot`                   | Dot-event instance          |
-| `event`                 | Event id                    |
-| `signal`                | Signal object               |
+| Argument                     | Description                 |
+| ---------------------------- | --------------------------- |
+| [`prop`](#props)             | Array of string identifiers |
+| [`arg`](#emit-argument)      | Emit argument               |
+| [`dot`](#composer-pattern)   | Dot-event instance          |
+| `event`                      | Event id                    |
+| [`signal`](#signal-argument) | Signal object               |
 
 ## Props
 
