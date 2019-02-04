@@ -91,7 +91,7 @@ dot.on("myEvent", "prop", prop => prop)
 dot("myEvent", "prop") // [ "prop" ]
 ```
 
-**Prop tip 1:** Any string or array of strings passed to `dot` after the event id are prop identifiers.
+**Prop tip 1:** Any string or array of strings passed to `dot` after the event id are prop identifiers (`prop`).
 
 **Prop tip 2:** The listener function always receives a prop array as its first argument.
 
@@ -102,7 +102,7 @@ dot.on((prop, arg) => arg)
 dot({ option: true }) // { option: true }
 ```
 
-**Arg tip 1:** The last non-prop emit argument is the emit argument.
+**Arg tip 1:** The last non-prop argument becomes the emit argument (`arg`).
 
 **Arg tip 2:** The listener function always receives the emit argument as its second argument.
 
