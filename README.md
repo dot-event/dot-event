@@ -52,22 +52,22 @@ dot() // emitter
 ## Return value
 
 ```js
-dot.on(() => "a")
-dot() // "a"
+dot.on(() => "value")
+dot() // "value"
 ```
 
 ## Async return value
 
 ```js
-dot.on(async () => "a")
-dot().then(result => /* [ "a" ] */)
+dot.on(async () => "value")
+dot().then(result => /* [ "value" ] */)
 ```
 
 ## Event id
 
 ```js
-dot.on("a", () => "b")
-dot("a") // "b"
+dot.on("myEvent", () => "value")
+dot("myEvent") // "value"
 ```
 
 **Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
@@ -87,8 +87,8 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 ## Props
 
 ```js
-dot.on("a", "b", "c", prop => prop)
-dot("a", "b", "c") // ["b", "c"]
+dot.on("myEvent", "prop", prop => prop)
+dot("myEvent", "prop") // [ "prop" ]
 ```
 
 **Prop tip 1:** Any string or array of strings passed to `dot` after the event id are prop identifiers.
@@ -99,7 +99,7 @@ dot("a", "b", "c") // ["b", "c"]
 
 ```js
 dot.on((prop, arg) => arg)
-dot({ a: "b" }) // { a: "b" }
+dot({ option: true }) // { option: true }
 ```
 
 **Arg tip 1:** The last non-prop emit argument is the emit argument.
@@ -110,15 +110,15 @@ dot({ a: "b" }) // { a: "b" }
 
 ```js
 dot.any(() => "!")
-dot("a", "b") // "!"
+dot("myEvent", "prop") // "!"
 ```
 
 ### Any with event id
 
 ```js
-dot.any("a", props => props)
-dot("a", "b", "c") // [ "b", "c" ]
-dot.a("b", "c") // <-- cool helper function!
+dot.any("myEvent", prop => prop)
+dot("myEvent", "prop") // [ "prop" ]
+dot.myEvent("prop") // <-- cool helper function!
 ```
 
 **Any w/ event id tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
@@ -126,11 +126,11 @@ dot.a("b", "c") // <-- cool helper function!
 ### Any with props
 
 ```js
-dot.any("a", "b", "c", props => props)
-dot("a") // noop
-dot("a", "b") // noop
-dot("a", "b", "c") // [ "b", "c" ]
-dot("a", "b", "c", "d") // [ "b", "c", "d" ]
+dot.any("myEvent", "prop", "prop2", props => props)
+dot("myEvent") // noop
+dot("myEvent", "prop") // noop
+dot("myEvent", "prop", "prop2") // [ "prop", "prop2" ]
+dot("myEvent", "prop", "prop2", "prop3") // [ "prop", "prop2", "prop3" ]
 ```
 
 ## Composer pattern
@@ -170,10 +170,10 @@ await Promise.all([...dot.state.events])
 ```js
 dot.on((prop, arg, dot, eventId, signal) => {
   signal.cancel = true
-  return "a"
+  return "value"
 })
-dot.on(() => "b") // never called
-dot() // "a"
+dot.on(() => "never called")
+dot() // "value"
 ```
 
 **Signal tip:** There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
