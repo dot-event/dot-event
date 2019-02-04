@@ -18,11 +18,11 @@ Event listeners can emit any event [through the `dot` argument](#listener-argume
 
 ## Event id & props
 
-Dot-event optionally uses an event id and prop string(s) to add identifying context to an emit. This "feature you didn't know you couldn't live without" pays off with logging, store updates, and more.
+Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. This "feature you didn't know you couldn't live without" pays off with logging, store updates, and more.
 
 ## Dynamic composition
 
-Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with dynamic imports and also makes it very easy to dispose of and recreate dot-event instances.
+Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) and also makes it very easy to dispose of and recreate dot-event instances.
 
 ## State
 
@@ -30,7 +30,7 @@ Dot-event provides basic state via the `dot.state` object. On this we built an [
 
 ## Ready for SSR
 
-Its simple to wait for all dot-event listeners to complete before rendering the final version of your server side page.
+Its simple to [wait for all dot-event listeners](#wait-for-pending-events) before rendering the final version of your server side page.
 
 ## Great logging
 
@@ -152,6 +152,18 @@ async function myEvent(prop, arg, dot) {
 **Pattern tip 1:** A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
 
 **Pattern tip 2:** Another common pattern is for listeners to append props before passing them along to another emit.
+
+## Dynamic imports
+
+```js
+dot.add(import("./myEvent"))
+```
+
+## Wait for pending events
+
+```js
+await Promise.all([...dot.state.events])
+```
 
 ## Signal argument
 
