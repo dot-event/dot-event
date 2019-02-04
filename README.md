@@ -26,7 +26,7 @@ Dot-event uses a [composer function pattern](#composer-pattern) to create librar
 
 ## State
 
-Dot-event provides a basic state store via the `dot.state` object. We built an [immutable store](https://github.com/dot-event/store2) on `dot.state` that leverages props and is only ~1 kb compressed and gzipped.
+Dot-event provides basic state via the `dot.state` object. On this we built an [immutable store](https://github.com/dot-event/store2) that leverages props and is only ~1 kb compressed and gzipped.
 
 ## Ready for SSR
 
