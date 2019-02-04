@@ -113,15 +113,25 @@ dot.any(() => "!")
 dot("a", "b") // "!"
 ```
 
-## Any with event id
+### Any with event id
 
 ```js
 dot.any("a", props => props)
 dot("a", "b", "c") // [ "b", "c" ]
-dot.a("b", "c") // or use the helper function!
+dot.a("b", "c") // <-- cool helper function!
 ```
 
 **Helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
+
+### Any with props
+
+```js
+dot.any("a", "b", "c", props => props)
+dot("a") // noop
+dot("a", "b") // noop
+dot("a", "b", "c") // [ "b", "c" ]
+dot("a", "b", "c", "d") // [ "b", "c", "d" ]
+```
 
 ## Composer pattern
 
@@ -142,6 +152,19 @@ async function myEvent(prop, arg, dot) {
 **Pattern tip 1:** A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
 
 **Pattern tip 2:** Another common pattern is for listeners to append props before passing them along to another emit.
+
+## Signal argument
+
+```js
+dot.on((prop, arg, dot, eventId, signal) => {
+  signal.cancel = true
+  return "a"
+})
+dot.on(() => "b") // never called
+dot() // "a"
+```
+
+**Signal tip:** There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
 
 ## Dot composers
 
