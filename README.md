@@ -101,11 +101,12 @@ dot.any(() => "!")
 dot("a", "b") // "!"
 ```
 
-## Any helper function
+## Any with event id
 
 ```js
 dot.any("a", props => props)
-dot.a("b", "c") // [ "b", "c" ]
+dot("a", "b", "c") // [ "b", "c" ]
+dot.a("b", "c") // or use the helper function!
 ```
 
 **Helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
