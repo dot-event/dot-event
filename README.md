@@ -70,7 +70,9 @@ dot.on("myEvent", () => "value")
 dot("myEvent") // "value"
 ```
 
-**Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
+**Event id tip 1:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
+
+**Event id tip 2:** The listener function always receives the event id as its [fourth argument](#listener-arguments).
 
 ## Listener arguments
 
@@ -81,7 +83,7 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 | [`prop`](#props)             | Array of string identifiers |
 | [`arg`](#emit-argument)      | Emit argument               |
 | [`dot`](#composer-pattern)   | Dot-event instance          |
-| `event`                      | Event id                    |
+| [`event`](#event-id)         | Event id                    |
 | [`signal`](#signal-argument) | Signal object               |
 
 ## Props
@@ -93,7 +95,7 @@ dot("myEvent", "prop") // [ "prop" ]
 
 **Prop tip 1:** Any string or array of strings passed to `dot` after the event id are prop identifiers (`prop`).
 
-**Prop tip 2:** The listener function always receives a prop array as its first argument.
+**Prop tip 2:** The listener function always receives a prop array as its [first argument](#listener-arguments).
 
 ## Emit argument
 
@@ -104,7 +106,7 @@ dot({ option: true }) // { option: true }
 
 **Arg tip 1:** The last non-prop argument becomes the emit argument (`arg`).
 
-**Arg tip 2:** The listener function always receives the emit argument as its second argument.
+**Arg tip 2:** The listener function always receives the emit argument as its [second argument](#listener-arguments).
 
 ## Any
 
