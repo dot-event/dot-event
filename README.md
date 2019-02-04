@@ -22,19 +22,19 @@ Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to 
 
 ## Dynamic composition
 
-Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) and also makes it very easy to dispose of and recreate dot-event instances.
+Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) to create dot-event instances with dynamic functionality.
 
 ## State
 
-Dot-event provides basic state via the `dot.state` object. On this we built an [immutable store](https://github.com/dot-event/store2) that leverages props and is only ~1 kb compressed and gzipped.
+Dot-event provides basic state via the `dot.state` object. On this object we built an [immutable store](https://github.com/dot-event/store2) that leverages props and is only ~1 kb compressed and gzipped.
 
-## Ready for SSR
+## SSR Ready
 
 Its simple to [wait for all dot-event listeners](#wait-for-pending-events) before rendering the final version of your server side page.
 
 ## Great logging
 
-Composer libraries can dynamically add a listener to all events, enabling [powerful logging features](https://github.com/dot-event/log2).
+Composer libraries can dynamically add a listener to all events, enabling [powerful logging features](https://github.com/dot-event/log2) out of the box.
 
 ## Setup
 
