@@ -121,7 +121,7 @@ dot("a", "b", "c") // [ "b", "c" ]
 dot.a("b", "c") // <-- cool helper function!
 ```
 
-**Helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
+**Any w/ event id tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
 
 ### Any with props
 
