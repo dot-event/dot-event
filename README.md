@@ -169,6 +169,8 @@ dot.add(import("./myEvent"))
 await Promise.all([...dot.state.events])
 ```
 
+**Pending events tip:** `dot.state.events` is a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of promises.
+
 ## Signal argument
 
 ```js
