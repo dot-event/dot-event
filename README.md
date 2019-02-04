@@ -121,7 +121,7 @@ dot("myEvent", "prop") // [ "prop" ]
 dot.myEvent("prop") // <-- cool helper function!
 ```
 
-**Any w/ event id tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
+**Any helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
 
 ### Any with props
 
