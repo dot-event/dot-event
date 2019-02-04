@@ -72,6 +72,18 @@ dot("a") // "b"
 
 **Event id tip:** The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
 
+## Listener arguments
+
+No matter what is passed to the `dot` emitter, listener functions always receive five arguments:
+
+| Argument                | Description                 |
+| ----------------------- | --------------------------- |
+| [`prop`](#props)        | Array of string identifiers |
+| [`arg`](#emit-argument) | Emit argument               |
+| `dot`                   | Dot-event instance          |
+| `event`                 | Event id                    |
+| `signal`                | Signal object               |
+
 ## Props
 
 ```js
@@ -110,16 +122,6 @@ dot.a("b", "c") // or use the helper function!
 ```
 
 **Helper tip:** Dot-event creates a helper function only if `dot.any` receives an event id with no props.
-
-## Listener arguments
-
-No matter what is passed to the `dot` emitter, listener functions always receive five arguments:
-
-- `prop` — an array of string identifiers
-- `arg` — the emit argument
-- `dot` — the dot-event instance
-- `event` — the event id
-- `signal` — dot-event signal object (use `signal.cancel = true` for event cancellation)
 
 ## Composer pattern
 
