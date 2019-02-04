@@ -161,6 +161,8 @@ async function myEvent(prop, arg, dot) {
 dot.add(import("./myEvent"))
 ```
 
+**Dynamic import tip:** You might need to run node with `--experimental-modules` to enable dynamic imports server side.
+
 ## Wait for pending events
 
 ```js
