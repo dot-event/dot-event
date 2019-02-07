@@ -115,6 +115,8 @@ dot.on(() => "never called")
 dot() // "value"
 ```
 
+> ℹ️ There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
+
 ## Any
 
 ```js
@@ -177,8 +179,6 @@ await Promise.all([...dot.state.events])
 ```
 
 > ℹ️ `dot.state.events` is a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of promises.
-
-> ℹ️ There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
 
 ## Dot composers
 
