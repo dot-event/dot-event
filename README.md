@@ -14,15 +14,15 @@ Dot-event has a tiny footprint (<1 kb compressed and gzipped).
 
 ## Write less code
 
-Event listeners can emit any event [through the `dot` argument](#listener-arguments), resulting in less `require` calls and easy access to functionality across your application.
+Event listeners may emit any event [through the `dot` argument](#listener-arguments), resulting in less `require` calls and easy access to functionality across your application.
 
 ## Event id & props
 
-Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log2#readme), [store updates](https://github.com/dot-event/store2#readme), and even [element ids](https://github.com/dot-event/el#readme).
+Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log2#readme), [store updates](https://github.com/dot-event/store2#readme), and even [dom element ids](https://github.com/dot-event/el#readme).
 
 ## Dynamic composition
 
-Dot-event uses a [composer function pattern](#composer-pattern) to create libraries that add new event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) to create dot-event instances with dynamic functionality.
+Dot-event uses a [composer function pattern](#composer-pattern) to add event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) to create dot-event instances with dynamic functionality.
 
 ## State
 
