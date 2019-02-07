@@ -12,33 +12,6 @@ Dot-event listeners can be synchronous or asynchronous, accept arguments, and re
 
 Dot-event has a tiny footprint (<1 kb compressed and gzipped).
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-- [Write less code](#write-less-code)
-- [Event id & props](#event-id--props)
-- [Dynamic composition](#dynamic-composition)
-- [State](#state)
-- [SSR-ready](#ssr-ready)
-- [Setup](#setup)
-- [Basics](#basics)
-  - [Return value](#return-value)
-  - [Async return value](#async-return-value)
-  - [Event id](#event-id)
-- [Listener arguments](#listener-arguments)
-  - [Props](#props)
-  - [Emit argument](#emit-argument)
-  - [Signal argument](#signal-argument)
-- [Any](#any)
-  - [Any with event id](#any-with-event-id)
-  - [Any with props](#any-with-props)
-- [Composer pattern](#composer-pattern)
-- [Dynamic imports](#dynamic-imports)
-- [Wait for pending events](#wait-for-pending-events)
-- [Dot composers](#dot-composers)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
-
 ### Write less code
 
 Event listeners may emit any event [through the `dot` argument](#listener-arguments), resulting in less `require` calls and easy access to functionality across your application.
@@ -58,6 +31,28 @@ Dot-event provides basic state via the `dot.state` object. On this object we bui
 ### SSR-ready
 
 Its simple to [wait for all dot-event listeners](#wait-for-pending-events) before rendering the final version of your server side page.
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Setup](#setup)
+- [Basics](#basics)
+  - [Return value](#return-value)
+  - [Async return value](#async-return-value)
+  - [Event id](#event-id)
+- [Listener arguments](#listener-arguments)
+  - [Props](#props)
+  - [Emit argument](#emit-argument)
+  - [Signal argument](#signal-argument)
+- [Any](#any)
+  - [Any with event id](#any-with-event-id)
+  - [Any with props](#any-with-props)
+- [Composer pattern](#composer-pattern)
+- [Dynamic imports](#dynamic-imports)
+- [Wait for pending events](#wait-for-pending-events)
+- [Dot composers](#dot-composers)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Setup
 
