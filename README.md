@@ -66,9 +66,9 @@ dot.on("myEvent", () => "value")
 dot("myEvent") // "value"
 ```
 
-ℹ️ The event id is the first string argument to `dot.on` or `dot.any`.
+> ℹ️ The event id is the first string argument to `dot.on` or `dot.any`.
 
-ℹ️ The listener function receives the event id as its [fourth argument](#listener-arguments).
+> ℹ️ The listener function receives the event id as its [fourth argument](#listener-arguments).
 
 ## Listener arguments
 
@@ -89,9 +89,9 @@ dot.on("myEvent", "prop", prop => prop)
 dot("myEvent", "prop") // [ "prop" ]
 ```
 
-ℹ️ String arguments after the [event id](#event-id) are prop identifiers.
+> ℹ️ String arguments after the [event id](#event-id) are prop identifiers.
 
-ℹ️ The listener function receives the prop array as its [first argument](#listener-arguments).
+> ℹ️ The listener function receives the prop array as its [first argument](#listener-arguments).
 
 ### Emit argument
 
@@ -100,9 +100,9 @@ dot.on((prop, arg) => arg)
 dot({ option: true }) // { option: true }
 ```
 
-ℹ️ The last non-prop argument becomes the emit argument (`arg`).
+> ℹ️ The last non-prop argument becomes the emit argument (`arg`).
 
-ℹ️ The listener function receives the emit argument as its [second argument](#listener-arguments).
+> ℹ️ The listener function receives the emit argument as its [second argument](#listener-arguments).
 
 ### Signal argument
 
@@ -130,7 +130,7 @@ dot("myEvent", "prop") // [ "prop" ]
 dot.myEvent("prop") // <-- cool helper function!
 ```
 
-ℹ️ Dot-event creates a helper function only if `dot.any` receives an event id with no props.
+> ℹ️ Dot-event creates a helper function only if `dot.any` receives an event id with no props.
 
 ### Any with props
 
@@ -158,9 +158,9 @@ async function myEvent(prop, arg, dot) {
 }
 ```
 
-ℹ️ A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
+> ℹ️ A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
 
-ℹ️ Another common pattern is for listeners to append props before passing them along to another emit.
+> ℹ️ Another common pattern is for listeners to append props before passing them along to another emit.
 
 ## Dynamic imports
 
@@ -168,7 +168,7 @@ async function myEvent(prop, arg, dot) {
 dot.add(import("./myEvent"))
 ```
 
-ℹ️ You might need to run node with `--experimental-modules` to enable dynamic imports server side.
+> ℹ️ You might need to run node with `--experimental-modules` to enable dynamic imports server side.
 
 ## Wait for pending events
 
@@ -176,9 +176,9 @@ dot.add(import("./myEvent"))
 await Promise.all([...dot.state.events])
 ```
 
-ℹ️ `dot.state.events` is a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of promises.
+> ℹ️ `dot.state.events` is a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of promises.
 
-ℹ️ There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
+> ℹ️ There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
 
 ## Dot composers
 
