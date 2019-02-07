@@ -18,7 +18,7 @@ Event listeners can emit any event [through the `dot` argument](#listener-argume
 
 ## Event id & props
 
-Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. This "feature you didn't know you couldn't live without" pays off with [logging](https://github.com/dot-event/log2#readme), [store](https://github.com/dot-event/store2#readme) updates, and even [element ids](https://github.com/dot-event/el#readme).
+Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log2#readme), [store updates](https://github.com/dot-event/store2#readme), and even [element ids](https://github.com/dot-event/el#readme).
 
 ## Dynamic composition
 
@@ -31,10 +31,6 @@ Dot-event provides basic state via the `dot.state` object. On this object we bui
 ## SSR-ready
 
 Its simple to [wait for all dot-event listeners](#wait-for-pending-events) before rendering the final version of your server side page.
-
-## Great logging
-
-Composer libraries can dynamically add a listener to all events, enabling [powerful logging features](https://github.com/dot-event/log2) out of the box.
 
 ## Setup
 
@@ -70,9 +66,9 @@ dot.on("myEvent", () => "value")
 dot("myEvent") // "value"
 ```
 
-ℹ️ The first string or element in an array of strings passed to `dot.on` or `dot.any` is the event id.
+ℹ️ The event id is the first string argument to `dot.on` or `dot.any`.
 
-ℹ️ The listener function always receives the event id as its [fourth argument](#listener-arguments).
+ℹ️ The listener function receives the event id as its [fourth argument](#listener-arguments).
 
 ## Listener arguments
 
@@ -93,9 +89,9 @@ dot.on("myEvent", "prop", prop => prop)
 dot("myEvent", "prop") // [ "prop" ]
 ```
 
-ℹ️ Any string or array of strings passed to `dot` after the event id are prop identifiers (`prop`).
+ℹ️ String arguments after the [event id](#event-id) are prop identifiers.
 
-ℹ️ The listener function always receives a prop array as its [first argument](#listener-arguments).
+ℹ️ The listener function receives the prop array as its [first argument](#listener-arguments).
 
 ## Emit argument
 
@@ -106,7 +102,7 @@ dot({ option: true }) // { option: true }
 
 ℹ️ The last non-prop argument becomes the emit argument (`arg`).
 
-ℹ️ The listener function always receives the emit argument as its [second argument](#listener-arguments).
+ℹ️ The listener function receives the emit argument as its [second argument](#listener-arguments).
 
 ## Any
 
