@@ -190,6 +190,6 @@ await Promise.all([...dot.state.events])
 | el         | DOM elements         | https://github.com/dot-event/el#readme         |
 | fetch      | Universal HTTP fetch | https://github.com/dot-event/fetch#readme      |
 | log        | Event logger         | https://github.com/dot-event/log2#readme       |
-| render     | SSR render           | https://github.com/dot-event/render#readme     |
+| render     | Server side render   | https://github.com/dot-event/render#readme     |
 | store      | Immutable store      | https://github.com/dot-event/store2#readme     |
 | view       | DOM view             | https://github.com/dot-event/view#readme       |
