@@ -12,23 +12,50 @@ Dot-event listeners can be synchronous or asynchronous, accept arguments, and re
 
 Dot-event has a tiny footprint (<1 kb compressed and gzipped).
 
-## Write less code
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+- [Write less code](#write-less-code)
+- [Event id & props](#event-id--props)
+- [Dynamic composition](#dynamic-composition)
+- [State](#state)
+- [SSR-ready](#ssr-ready)
+- [Setup](#setup)
+- [Basics](#basics)
+  - [Return value](#return-value)
+  - [Async return value](#async-return-value)
+  - [Event id](#event-id)
+- [Listener arguments](#listener-arguments)
+  - [Props](#props)
+  - [Emit argument](#emit-argument)
+  - [Signal argument](#signal-argument)
+- [Any](#any)
+  - [Any with event id](#any-with-event-id)
+  - [Any with props](#any-with-props)
+- [Composer pattern](#composer-pattern)
+- [Dynamic imports](#dynamic-imports)
+- [Wait for pending events](#wait-for-pending-events)
+- [Dot composers](#dot-composers)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
+### Write less code
 
 Event listeners may emit any event [through the `dot` argument](#listener-arguments), resulting in less `require` calls and easy access to functionality across your application.
 
-## Event id & props
+### Event id & props
 
 Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log2#readme), [store updates](https://github.com/dot-event/store2#readme), and even [dom element ids](https://github.com/dot-event/el#readme).
 
-## Dynamic composition
+### Dynamic composition
 
 Dot-event uses a [composer function pattern](#composer-pattern) to add event listeners. This pattern works very well with [dynamic imports](#dynamic-imports) to create dot-event instances with dynamic functionality.
 
-## State
+### State
 
 Dot-event provides basic state via the `dot.state` object. On this object we built an [immutable store](https://github.com/dot-event/store2#readme) that leverages props and is only ~1 kb compressed and gzipped.
 
-## SSR-ready
+### SSR-ready
 
 Its simple to [wait for all dot-event listeners](#wait-for-pending-events) before rendering the final version of your server side page.
 
@@ -45,21 +72,21 @@ dot.on(() => {}) // listener
 dot() // emitter
 ```
 
-## Return value
+### Return value
 
 ```js
 dot.on(() => "value")
 dot() // "value"
 ```
 
-## Async return value
+### Async return value
 
 ```js
 dot.on(async () => "value")
 dot().then(result => /* [ "value" ] */)
 ```
 
-## Event id
+### Event id
 
 ```js
 dot.on("myEvent", () => "value")
@@ -82,7 +109,7 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 | [`event`](#event-id)         | Event id                    |
 | [`signal`](#signal-argument) | Signal object               |
 
-## Props
+### Props
 
 ```js
 dot.on("myEvent", "prop", prop => prop)
@@ -93,7 +120,7 @@ dot("myEvent", "prop") // [ "prop" ]
 
 ℹ️ The listener function receives the prop array as its [first argument](#listener-arguments).
 
-## Emit argument
+### Emit argument
 
 ```js
 dot.on((prop, arg) => arg)
@@ -103,6 +130,17 @@ dot({ option: true }) // { option: true }
 ℹ️ The last non-prop argument becomes the emit argument (`arg`).
 
 ℹ️ The listener function receives the emit argument as its [second argument](#listener-arguments).
+
+### Signal argument
+
+```js
+dot.on((prop, arg, dot, eventId, signal) => {
+  signal.cancel = true
+  return "value"
+})
+dot.on(() => "never called")
+dot() // "value"
+```
 
 ## Any
 
@@ -166,17 +204,6 @@ await Promise.all([...dot.state.events])
 ```
 
 ℹ️ `dot.state.events` is a [`Set`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set) of promises.
-
-## Signal argument
-
-```js
-dot.on((prop, arg, dot, eventId, signal) => {
-  signal.cancel = true
-  return "value"
-})
-dot.on(() => "never called")
-dot() // "value"
-```
 
 ℹ️ There is one other signal, `signal.value`, which you can set instead of using `return` in your listener function.
 
