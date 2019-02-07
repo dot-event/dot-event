@@ -19,11 +19,9 @@
     "fix": "npm run lint -- --fix",
     "lint": "eslint --ignore-path .gitignore --ext=js .",
     "pretty": "prettier --write **/*.css **/*.json **/*.md",
-    "readme": "doctoc --notitle .",
     "test": "jest"
   },
   "devDependencies": {
-    "doctoc": "^1.4.0",
     "eslint": "5.9.0",
     "eslint-config-prettier": "3.3.0",
     "eslint-plugin-prettier": "3.0.0",
