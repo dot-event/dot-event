@@ -61,12 +61,12 @@ dot().then(result => /* [ "value" ] */)
 
 ### Event id
 
+The event id is the first string argument to `dot.on` or `dot.any`.
+
 ```js
 dot.on("myEvent", () => "value")
 dot("myEvent") // "value"
 ```
-
-> ℹ️ The event id is the first string argument to `dot.on` or `dot.any`.
 
 > ℹ️ The listener function receives the event id as its [fourth argument](#listener-arguments).
 
@@ -84,23 +84,23 @@ No matter what is passed to the `dot` emitter, listener functions always receive
 
 ### Props
 
+String arguments after the [event id](#event-id) are prop identifiers.
+
 ```js
 dot.on("myEvent", "prop", prop => prop)
 dot("myEvent", "prop") // [ "prop" ]
 ```
 
-> ℹ️ String arguments after the [event id](#event-id) are prop identifiers.
-
 > ℹ️ The listener function receives the prop array as its [first argument](#listener-arguments).
 
 ### Emit argument
+
+The last non-prop argument becomes the emit argument (`arg`).
 
 ```js
 dot.on((prop, arg) => arg)
 dot({ option: true }) // { option: true }
 ```
-
-> ℹ️ The last non-prop argument becomes the emit argument (`arg`).
 
 > ℹ️ The listener function receives the emit argument as its [second argument](#listener-arguments).
 
@@ -146,6 +146,8 @@ dot("myEvent", "prop", "prop2", "prop3") // [ "prop", "prop2", "prop3" ]
 
 ## Composer pattern
 
+A common pattern is for composers to define listeners that respond to `any` props of a particular event id.
+
 ```js
 export default function(dot) {
   if (dot.myEvent) {
@@ -160,9 +162,7 @@ async function myEvent(prop, arg, dot) {
 }
 ```
 
-> ℹ️ A common pattern is for composers to define listeners that respond to `any` prop of a particular event id.
-
-> ℹ️ Another common pattern is for listeners to append props before passing them along to another emit.
+> ℹ️ Another common pattern illustrated here is to append a prop id before passing them along to another emit.
 
 ## Dynamic imports
 
