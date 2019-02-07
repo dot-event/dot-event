@@ -182,10 +182,14 @@ await Promise.all([...dot.state.events])
 
 ## Dot composers
 
-| Library | Description          | URL                                        |
-| ------- | -------------------- | ------------------------------------------ |
-| ad      | Google Publisher Tag | https://github.com/dot-event/ad#readme     |
-| arg     | CLI and URL argument | https://github.com/dot-event/arg#readme    |
-| fetch   | Universal HTTP fetch | https://github.com/dot-event/fetch#readme  |
-| log     | Event logger         | https://github.com/dot-event/log2#readme   |
-| store   | Immutable store      | https://github.com/dot-event/store2#readme |
+| Library    | Description          | URL                                            |
+| ---------- | -------------------- | ---------------------------------------------- |
+| ad         | Google Publisher Tag | https://github.com/dot-event/ad#readme         |
+| arg        | CLI and URL argument | https://github.com/dot-event/arg#readme        |
+| controller | DOM controller       | https://github.com/dot-event/controller#readme |
+| el         | DOM elements         | https://github.com/dot-event/el#readme         |
+| fetch      | Universal HTTP fetch | https://github.com/dot-event/fetch#readme      |
+| log        | Event logger         | https://github.com/dot-event/log2#readme       |
+| render     | SSR render           | https://github.com/dot-event/render#readme     |
+| store      | Immutable store      | https://github.com/dot-event/store2#readme     |
+| view       | DOM view             | https://github.com/dot-event/view#readme       |
