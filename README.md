@@ -150,9 +150,6 @@ A common pattern is for composers to define listeners that respond to `any` prop
 
 ```js
 export default function(dot) {
-  if (dot.myEvent) {
-    return
-  }
   dot.any("myEvent", myEvent)
 }
 
