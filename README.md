@@ -56,7 +56,7 @@ dot() // "value"
 
 ```js
 dot.on(async () => "value")
-dot().then(result => /* [ "value" ] */)
+dot().then(result => /* "value" */)
 ```
 
 ### Event id

@@ -94,7 +94,11 @@ function emit(a, k, m, p, r) {
   var promise = Promise.all(pr)
     .then(function(results) {
       s.events.delete(promise)
-      return sig.value === undefined ? results : sig.value
+      return sig.value === undefined
+        ? results.length < 2
+          ? results[0]
+          : results
+        : sig.value
     })
     .catch(function(err) {
       s.events.delete(promise)
