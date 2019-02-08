@@ -39,12 +39,12 @@ function emitAny(a, k, m, p, pr, r, s) {
   //
   var key
 
+  emitOn(a, undefined, m, p, pr, r, s)
+
   k.arr.forEach(function(prop) {
     key = key ? key + period + prop : prop
     emitOn(a, key, m, p, pr, r, s)
   })
-
-  emitOn(a, undefined, m, p, pr, r, s)
 }
 
 // Emit "on" listener functions
@@ -88,8 +88,8 @@ function emit(a, k, m, p, r) {
     s = r.dot.state,
     sig = {}
 
-  emitOn(a, k, s.on, p, pr, r, sig)
   emitAny(a, k, s.any, p, pr, r, sig)
+  emitOn(a, k, s.on, p, pr, r, sig)
 
   var promise = Promise.all(pr)
     .then(function(results) {
