@@ -182,6 +182,7 @@ await Promise.all([...dot.state.events])
 | Library    | Description          | URL                                            |
 | ---------- | -------------------- | ---------------------------------------------- |
 | ad         | Google Publisher Tag | https://github.com/dot-event/ad#readme         |
+| alias      | Argument aliases     | https://github.com/dot-event/alias#readme      |
 | arg        | CLI and URL argument | https://github.com/dot-event/arg#readme        |
 | controller | DOM controller       | https://github.com/dot-event/controller#readme |
 | el         | DOM elements         | https://github.com/dot-event/el#readme         |
