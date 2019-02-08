@@ -18,7 +18,7 @@ Event listeners may emit any event [through the `dot` argument](#listener-argume
 
 ### Event id & props
 
-Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log2#readme), [store updates](https://github.com/dot-event/store2#readme), and even [dom element ids](https://github.com/dot-event/el#readme).
+Dot-event optionally uses [event id](#event-id) and [prop string(s)](#props) to add identifying context to an emit. Props pay off with [logging](https://github.com/dot-event/log#readme), [store updates](https://github.com/dot-event/store#readme), and even [dom element ids](https://github.com/dot-event/el#readme).
 
 ### Dynamic composition
 
@@ -26,7 +26,7 @@ Dot-event uses a [composer function pattern](#composer-pattern) to add event lis
 
 ### State
 
-Dot-event provides basic state via the `dot.state` object. On this object we built an [immutable store](https://github.com/dot-event/store2#readme) that leverages props and is only ~1 kb compressed and gzipped.
+Dot-event provides basic state via the `dot.state` object. On this object we built an [immutable store](https://github.com/dot-event/store#readme) that leverages props and is only ~1 kb compressed and gzipped.
 
 ### SSR-ready
 
@@ -186,7 +186,7 @@ await Promise.all([...dot.state.events])
 | controller | DOM controller       | https://github.com/dot-event/controller#readme |
 | el         | DOM elements         | https://github.com/dot-event/el#readme         |
 | fetch      | Universal HTTP fetch | https://github.com/dot-event/fetch#readme      |
-| log        | Event logger         | https://github.com/dot-event/log2#readme       |
+| log        | Event logger         | https://github.com/dot-event/log#readme        |
 | render     | Server side render   | https://github.com/dot-event/render#readme     |
-| store      | Immutable store      | https://github.com/dot-event/store2#readme     |
+| store      | Immutable store      | https://github.com/dot-event/store#readme      |
 | view       | DOM view             | https://github.com/dot-event/view#readme       |
