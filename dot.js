@@ -69,7 +69,7 @@ function emitOn(a, k, m, p, pr, r, s) {
         if (out && out.then) {
           pr.push(out)
         } else if (out !== undefined) {
-          s.value = out || s.value
+          s.value = s.value || out
         }
       }
     })
