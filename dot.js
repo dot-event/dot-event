@@ -214,7 +214,7 @@ function setup() {
     if (isArr || isStr) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
-      a = arg
+      a = arg && arg.arg ? arg.arg : arg
     }
   }
 
