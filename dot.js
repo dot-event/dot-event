@@ -202,10 +202,9 @@ function setup() {
 
   for (var i = 0; i < args.length; i++) {
     var arg = args[i]
-    var isArr = Array.isArray(arg) && arg.every(isStrTest),
-      isStr = isStrTest(arg)
+    var isStr = typeof arg === strType
 
-    if (isArr || isStr) {
+    if (isStr || Array.isArray(arg)) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
       a = arg && arg.arg ? arg.arg : arg
@@ -217,8 +216,4 @@ function setup() {
   p.event = k.arr[0]
 
   return this.fn(a, k, this.m, p, this.r)
-}
-
-function isStrTest(arg) {
-  return typeof arg === strType
 }
