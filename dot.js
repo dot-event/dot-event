@@ -15,13 +15,17 @@ module.exports = function dot() {
     r = {}
 
   dot = r.dot = setup.bind({ fn: emit, r: r })
+
+  dot.state = {
+    any: new Map(),
+    events: new Set(),
+    on: new Map(),
+  }
+
   dot.add = add.bind({ r: r })
   dot.any = setup.bind({ fn: on, m: "any", r: r })
   dot.on = setup.bind({ fn: on, m: "on", r: r })
   dot.off = setup.bind({ fn: off, r: r })
-  dot.reset = reset.bind({ r: r })
-
-  dot.reset()
 
   return dot
 }
@@ -186,16 +190,6 @@ function on(a, k, m, p, r) {
   set.add(a)
 
   return off.bind(null, a, k, m, p, r)
-}
-
-// Reset state
-//
-function reset() {
-  this.r.dot.state = {
-    any: new Map(),
-    events: new Set(),
-    on: new Map(),
-  }
 }
 
 // Parse arguments for `emit`, `off`, `on`, and `any`

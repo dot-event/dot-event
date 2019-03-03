@@ -1,10 +1,10 @@
 /*global Promise*/
 /* eslint-env jest */
 
-var dot = require("./dot")()
+var dot
 
 beforeEach(function() {
-  dot.reset()
+  dot = require("./dot")()
 })
 
 describe("dot", function() {
@@ -156,22 +156,10 @@ describe("dot", function() {
     })
   })
 
-  test("emit helper", function() {
-    var called
-
-    dot.on("a", "b", "c", function() {
-      called = true
-    })
-
-    return dot.a("b.c").then(function() {
-      expect(called).toBe(true)
-    })
-  })
-
   test("emit helper without props", function() {
     var called
 
-    dot.on("a", function() {
+    dot.any("a", function() {
       called = true
     })
 

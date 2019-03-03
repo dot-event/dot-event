@@ -1,9 +1,9 @@
 /* eslint-env jest */
 
-var dot = require("./dot")()
+var dot
 
 beforeEach(function() {
-  dot.reset()
+  dot = require("./dot")()
 })
 
 describe("opt", function() {
