@@ -114,7 +114,7 @@ function emit(a, k, m, p, r) {
   return sig.value === undefined ? promise : sig.value
 }
 
-// Add promise (optionally from dynamic import) to events.
+// Run composer from promise (dynamic import).
 //
 function add(promise) {
   var dot = this.r.dot,
