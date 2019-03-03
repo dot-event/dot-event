@@ -203,8 +203,12 @@ function setup() {
   for (var i = 0; i < args.length; i++) {
     var arg = args[i]
     var isStr = typeof arg === strType
+    var isArr =
+      !isStr &&
+      Array.isArray(arg) &&
+      typeof arg[0] === strType
 
-    if (isStr || Array.isArray(arg)) {
+    if (isStr || isArr) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
       a = arg && arg.arg ? arg.arg : arg
