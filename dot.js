@@ -206,7 +206,7 @@ function setup() {
     var isArr =
       !isStr &&
       Array.isArray(arg) &&
-      typeof arg[0] === strType
+      (!arg[0] || typeof arg[0] === strType)
 
     if (isStr || isArr) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
