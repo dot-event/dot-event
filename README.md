@@ -182,8 +182,8 @@ await Promise.all([...dot.state.events])
 | Library    | Description          | URL                                            |
 | ---------- | -------------------- | ---------------------------------------------- |
 | ad         | Google Publisher Tag | https://github.com/dot-event/ad#readme         |
-| alias      | Argument aliases     | https://github.com/dot-event/alias#readme      |
-| arg        | CLI and URL argument | https://github.com/dot-event/arg#readme        |
+| args       | Argument definitions | https://github.com/dot-event/args#readme       |
+| argv       | Parse process.argv   | https://github.com/dot-event/argv#readme       |
 | controller | DOM controller       | https://github.com/dot-event/controller#readme |
 | el         | DOM elements         | https://github.com/dot-event/el#readme         |
 | fetch      | Universal HTTP fetch | https://github.com/dot-event/fetch#readme      |
