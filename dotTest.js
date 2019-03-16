@@ -64,6 +64,24 @@ describe("dot", function() {
     )
   })
 
+  test("on arg", function() {
+    var arg
+
+    dot.on(["a", "b"], "c", function(p, a, d, e, sig) {
+      sig.arg = { test: true }
+    })
+
+    dot.on(["a", "b"], "c", function(p, a) {
+      arg = a
+    })
+
+    return dot("a", "b", "c", { failed: true }).then(
+      function() {
+        expect(arg).toEqual({ test: true })
+      }
+    )
+  })
+
   test("on cancel", function() {
     var called
 

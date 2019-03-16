@@ -69,7 +69,7 @@ function emitOn(a, k, m, p, pr, r, s) {
   if (set) {
     set.forEach(function(fn) {
       if (!s.cancel) {
-        var out = fn(p.arr, a, r.dot, p.event, s)
+        var out = fn(p.arr, s.arg || a, r.dot, p.event, s)
         if (out && out.then) {
           pr.push(out)
         } else if (out !== undefined) {
