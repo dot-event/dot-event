@@ -126,7 +126,7 @@ function emitReturn(a, p, promise, r, s) {
   var hasValue = s.value !== undefined,
     hasValueFn = s.valueFn !== undefined
 
-  if (!hasValueFn && !hasValue) {
+  if (!hasValue) {
     s.valuePromise = promise
   }
 
