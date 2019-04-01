@@ -87,31 +87,55 @@ function emit(a, k, m, p, r) {
   // k - key
   // p - props
   // r - refs
+  // s - signal
   //
   var pr = [],
-    s = r.dot.state,
-    sig = {}
+    s = {},
+    state = r.dot.state
 
-  emitAny(a, k, s.any, p, pr, r, sig)
-  emitOn(a, k, s.on, p, pr, r, sig)
+  emitAny(a, k, state.any, p, pr, r, s)
+  emitOn(a, k, state.on, p, pr, r, s)
 
   var promise = Promise.all(pr)
     .then(function(results) {
-      s.events.delete(promise)
-      return sig.value === undefined
+      state.events.delete(promise)
+      return s.value === undefined
         ? results.length < 2
           ? results[0]
           : results
-        : sig.value
+        : s.value
     })
     .catch(function(err) {
-      s.events.delete(promise)
+      state.events.delete(promise)
       throw err
     })
 
-  s.events.add(promise)
+  state.events.add(promise)
 
-  return sig.value === undefined ? promise : sig.value
+  return emitReturn(a, p, promise, r, s)
+}
+
+// Determine the emit return value from the signal.
+//
+function emitReturn(a, p, promise, r, s) {
+  // a - arg
+  // p - props
+  // r - refs
+  // s - signal
+  //
+  var hasValue = s.value !== undefined,
+    hasValueFn = s.valueFn !== undefined
+
+  if (!hasValueFn && !hasValue) {
+    s.valuePromise = promise
+  }
+
+  // prettier-ignore
+  return hasValueFn
+    ? s.valueFn(p.arr, s.arg || a, r.dot, p.event, s)
+    : hasValue
+      ? s.value :
+      s.valuePromise
 }
 
 // Run composer from promise (dynamic import).
@@ -211,7 +235,7 @@ function setup() {
     if (isStr || isArr) {
       k.arr = k.arr.concat(isStr ? [arg] : arg)
     } else if (i === args.length - 1) {
-      a = arg && arg.arg ? arg.arg : arg
+      a = arg && arg.hasOwnProperty("arg") ? arg.arg : arg
     }
   }
 

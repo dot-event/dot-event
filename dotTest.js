@@ -58,7 +58,9 @@ describe("dot", function() {
           { test: true },
           dot,
           "a",
-          {},
+          {
+            valuePromise: expect.any(Promise),
+          },
         ])
       }
     )
@@ -101,6 +103,16 @@ describe("dot", function() {
   test("on value", function() {
     dot.on(["a", "b"], "c", function(p, a, d, e, sig) {
       sig.value = true
+    })
+
+    expect(dot("a", "b", "c")).toBe(true)
+  })
+
+  test("on value (from function)", function() {
+    dot.on(["a", "b"], "c", function(p, a, d, e, sig) {
+      sig.valueFn = function() {
+        return true
+      }
     })
 
     expect(dot("a", "b", "c")).toBe(true)

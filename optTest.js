@@ -1,3 +1,4 @@
+/* global Promise */
 /* eslint-env jest */
 
 var dot
@@ -20,7 +21,9 @@ describe("opt", function() {
         undefined,
         dot,
         "a",
-        {},
+        {
+          valuePromise: expect.any(Promise),
+        },
       ])
     })
   })
@@ -33,7 +36,15 @@ describe("opt", function() {
     })
 
     return dot("a").then(function() {
-      expect(args).toEqual([[], undefined, dot, "a", {}])
+      expect(args).toEqual([
+        [],
+        undefined,
+        dot,
+        "a",
+        {
+          valuePromise: expect.any(Promise),
+        },
+      ])
     })
   })
 
@@ -45,7 +56,15 @@ describe("opt", function() {
     })
 
     return dot(true).then(function() {
-      expect(args).toEqual([[], true, dot, undefined, {}])
+      expect(args).toEqual([
+        [],
+        true,
+        dot,
+        undefined,
+        {
+          valuePromise: expect.any(Promise),
+        },
+      ])
     })
   })
 })
