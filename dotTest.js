@@ -173,16 +173,21 @@ describe("dot", function() {
   })
 
   test("off", function() {
-    var called
+    var called, called2
 
     var off = dot.on("a", "b", "c", function() {
       called = true
+    })
+
+    dot.on("a", "b", "c", function() {
+      called2 = true
     })
 
     off()
 
     return dot("a", "b", "c").then(function() {
       expect(called).not.toBe(true)
+      expect(called2).toBe(true)
     })
   })
 

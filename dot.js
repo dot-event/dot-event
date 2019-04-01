@@ -172,8 +172,8 @@ function off(a, k, m, p, r) {
   var s = r.dot.state,
     set = s[m].get(k.str)
 
-  if (set) {
-    a ? s[m].delete(k.str) : set.delete(a)
+  if (a && set) {
+    set.delete(a)
   }
 }
 
